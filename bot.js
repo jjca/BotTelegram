@@ -10,11 +10,43 @@ const bot = new TelegramBot(token, {
 const request = require('request');
 
 
+
+
 // Respuestas a mensajes predeterminados
 
-bot.on('message', function (msg) {
+bot.on('message', (msg) => {
+    var hola = "hola";
+    if (msg.text.toString().toLowerCase().indexOf(hola) === 0) {
+        bot.sendMessage(msg.chat.id, "Hola " + msg.from.first_name + ", ¿Qué tal?");
+        bot.getUserProfilePhotos(userId, );
+    }
 
+    var cdlm = "coño de la madre";
+    if (msg.text.toString().toLowerCase().includes(cdlm)) {
+        bot.sendMessage(msg.chat.id, msg.from.first_name + ", Maduro te ama");
+    }
+
+    var mmgv = "mamaguevo";
+    if (msg.text.toString().toLowerCase().includes(mmgv)) {
+        bot.sendMessage(msg.chat.id, msg.from.first_name + ", ¡NIÑ@!, ¿Con esa boca besas a tú mamá?");
+
+    }
+
+    var digalo = "digalo ahí nalat";
+    var digalo2 = "digalo ahi nalat";
+    if (msg.text.toString().toLowerCase().indexOf(digalo) === 0 || msg.text.toString().toLowerCase().indexOf(digalo2) === 0) {
+        bot.sendMessage(msg.chat.id, "Sisa manauresaurio");
+    }
 });
+
+//Comandos
+
+bot.onText(/\/start/, (msg) => {
+    bot.sendMessage(msg.chat.id, "Hola " + msg.from.first_name + ", soy Nalat en que puedo ayudarte");
+});
+
+/* 
+
 /* const mpbr = /Hola ||HOLA ||hola ||Buenas ||buenas ||Hola Nalat ||hola Nalat/;
 const cdlm = /Coño de la madre ||COÑO DE LA MADRE ||Coño De La Made ||coño de la madre/;
 const mmgv = /Mamaguevo ||mamaguevo ||MAMAGUEVO ||Mamahuevo ||mamahuevo ||MAMAHUEVO ||mmgv ||MMGV/;
@@ -23,17 +55,10 @@ bot.on(mpbr, (msg) => {
    // if (msg.text.includes(mpbr)) {
     bot.sendMessage(msg.chat.id, "Hola " + msg.from.first_name + ", ¿Qué tal?");
     //}
-    }); */
+    });
 
-bot.onText(/Hola Nalat/, function (msg) {
-    bot.sendMessage(msg.chat.id, "Hola " + msg.from.first_name + ", ¿Qué tal?");
-});
-bot.onText(/coño de la madre/, (msg) => {
-    bot.sendMessage(msg.chat.id, msg.from.first_name + ", Maduro te ama");
-});
-bot.onText(/mamaguevo/, (msg) => {
-    bot.sendMessage(msg.chat.id, msg.from.first_name + ", ¡NIÑO!, ¿Con esa boca besas a tú mamá?");
-});
+
+
 bot.onText(/Digalo ahí Nalat/, (msg) => {
     bot.sendMessage(msg.chat.id, "Sisa manauresaurio");
 });
@@ -65,9 +90,7 @@ bot.onText(/Nalat, ¿Qué opinas de mi?/, (msg) => {
 });
 
 // Mensaje cuando alguien inicia el bot con /start
-bot.onText(/\/start/, (msg) => {
-    bot.sendMessage(msg.chat.id, "Hola " + msg.from.first_name + ", soy Nalat en que puedo ayudarte");
-});
+
 
 // Juego Ping Pong
 bot.onText(/\/ping/, (msg) => {
@@ -159,4 +182,5 @@ bot.onText(/^\/enlace/, function (msg) {
             bot.sendMessage(chatId, "Solo administradores y creador pueden usar este comando.");
         }
     });
-});
+}); 
+*/
