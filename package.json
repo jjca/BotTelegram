@@ -1,0 +1,11 @@
+{
+  "name": "nalatbot",
+  "version": "1.0.0",
+  "description": "Bot para telegram en nodejs",
+  "main": "bot.js",
+  "author": "Manuel Escalante",
+  "license": "ISC",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.30.0"
+  }
+}
