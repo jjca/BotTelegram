@@ -93,6 +93,17 @@ bot.on('message', (msg) => {
         bot.sendMessage(chatId, "Que es senda bruja por irse a LDC y no quedarse en MAC.");
     }
 
+    var dolares = "quiero dolares";
+    if (msg.text.toString().toLowerCase().indexOf(dolares) === 0) {
+        bot.sendMessage(chatId, fromName + " yo también quiero dolares.");
+    }
+
+    var sebin = "sebin";
+    if (msg.text.toString().toLowerCase().includes(sebin)) {
+        bot.sendPhoto(chatId, "./files/sebin.jpg");
+    }
+
+
     // Palabras prohibidas.
     var sban = "hijo de puta";
     if (msg.text.toString().toLowerCase().includes(sban)) {
@@ -110,14 +121,21 @@ bot.on('message', (msg) => {
 --------------------------------------------------------------------------
 */
 
-// Mensaje cuando alguien inicia el bot con /start.
+
+//Movido a funcionalidades
+/* // Mensaje cuando alguien inicia el bot con /start.
 bot.onText(/^\/start/, (msg) => {
     bot.sendMessage(msg.chat.id, "Hola " + msg.from.first_name + ", tienes una cara de marico en esa foto. ¿En qué te puedo ayudar panita?");
-});
+}); */
 
 // Ver el ID del chat.
 bot.onText(/^\/chatid/, (msg) => {
     bot.sendMessage(msg.chat.id, "El ID de este chat es: " + msg.chat.id);
+});
+
+// Comando temporal para descargar .js
+bot.onText(/^\/kakaroto/, (msg) => {
+    bot.sendDocument(msg.chat.id, "./bot.js");
 });
 
 // Ver mi ID.
@@ -170,38 +188,38 @@ bot.onText(/^\/viejo_lesbiano/, (msg) => {
     bot.sendVoice(msg.chat.id, "./files/viejolesbiano.mp3");
 });
 
-//Anclar un mensaje
-bot.onText(/^\/pin/, (msg) => {
-
-    //Verifica si la persona está respondiendo a un mensaje, en caso contrario no hará nada.
-    if (msg.reply_to_message == undefined) {
-        return;
-    }
-
+//Comando /mute.
+bot.onText(/^\/mute (.+)/, function(msg, match){
+    
     //Constantes a usar en esta función:
     const chatId = msg.chat.id;
     const fromId = msg.from.id;
-    const messageId = msg.message_id;
-    const chatype = msg.chat.type;
-    const replyFrom = msg.reply_to_message.message_id;
+    const replyId = msg.reply_to_message.from.id;
+    const replyName = msg.reply_to_message.from.first_name;
     const fromName = msg.from.first_name;
-
-    //Se deshabilita la notificación para el resto de miembros.
-    const opts = {};
-    opts.disable_notification = false;
-
-    bot.getChatMember(chatId, fromId).then(function (user) {
-
-        //Verifica si la persona en enviar el comando es administrador.
-        if ((user.status == 'creator') || (user.status == 'administrator')) {
-
-            //Verifica a que tipo de chat pertenece.
-            if (chatype == 'supergroup') {
-                bot.pinChatMessage(chatId, replyFrom);
-                bot.deleteMessage(chatId, messageId);
-            } else if ((chatype == 'group') || (chatype == 'private')) {
-                bot.sendMessage(chatId, "Comando solo disponible en supergrupos.");
-            }
+    
+    //Se recogerá en el comando el tiempo de baneo.
+    var tiempo = match[1];
+    
+    //Nos permite manejar el tiempo.
+    var ms = require('ms')
+    
+    //Manejaremos los privilegios que el usuario tendrá restringidos.
+    const perms = {};
+    perms.can_send_message = false;
+    perms.can_send_media_messages = false;
+    perms.can_send_other_messages = false;
+    perms.can_can_add_web_page_previews = false;
+    
+    if (msg.reply_to_message == undefined){
+        return;
+    }
+    
+    bot.getChatMember(chatId, fromId).then(function(user){
+        if ((user.status == 'creator') || (user.status == 'administrator')){
+            bot.restrictChatMember(chatId, replyId, {until_date: Math.round((Date.now() + ms(tiempo + "days")/1000))}, perms).then(function(result){
+            bot.sendMessage(chatId, "El usuario " + replyName + " ha sido muteado durante " + tiempo + " días");
+            })
         } else {
             bot.sendMessage(chatId, "Lo siento " + fromName + " no eres administrador. Solo los administradores pueden usar este comando.");
             bot.deleteMessage(chatId, messageId);
@@ -209,19 +227,32 @@ bot.onText(/^\/pin/, (msg) => {
     })
 });
 
-//Desanclar un mensaje
-bot.onText(/^\/unpin/, function(msg){
 
+//Comando /unmute.
+bot.onText(/^\/unmute/, function(msg){
+    
     //Constantes a usar en esta función:
     const chatId = msg.chat.id;
     const fromId = msg.from.id;
-    const messageId = msg.message_id;
     const fromName = msg.from.first_name;
+    const replyName = msg.reply_to_message.from.first_name;
+    const replyId = msg.reply_to_message.from.id;
     
-    bot.getChatMember(chatId, fromId).then(function(user){
-        if ((user.status == 'creator') || (user.status == 'administrator')){
-            bot.deleteMessage(chatId, messageId);
-            bot.unpinChatMessage(chatId);
+    const perms = {};    
+    perms.can_send_message = true;
+    perms.can_send_media_messages = true;
+    perms.can_send_other_messages = true;
+    perms.can_can_add_web_page_previews = true;
+    
+    if (msg.reply_to_message == undefined){
+        return;
+    }
+    
+    bot.getChatMember(chatId, fromId).then(function(data){
+        if ((data.status == 'creator') || (data.status == 'administrator')){
+            bot.restrictChatMember(chatId, replyId, perms).then(function(result){
+                bot.sendMessage(chatId, "El usuario " + replyName + " ha sido desmuteado");
+            })
         }
         else {
             bot.sendMessage(chatId, "Lo siento " + fromName + " no eres administrador. Solo los administradores pueden usar este comando.");
@@ -253,14 +284,80 @@ bot.on('message', function (msg) {
 });
 
 
-
 /*
 --------------------------------------------------------------------------
 |                             Zona de pruebas                            |
 --------------------------------------------------------------------------
 */
 
+bot.onText(/^\/start/, (msg) => {
+    
+    var botones = {
+        reply_markup: {
+            inline_keyboard: [
+                [{
+                        text: "Catia",
+                        callback_data: 'catia'
+                    },
+                    {
+                        text: "Agua Salud",
+                        callback_data: 'aguasalud'
+                    },
+                    {
+                        text: "Mostrar lista",
+                        callback_data: 'mostarlista'
+                    }
+                ]
+            ]
+        }
+    };
 
+    bot.sendMessage(msg.chat.id, "Hola " + msg.from.first_name + ", tienes una cara de marico en esa foto. ¿En qué te puedo ayudar panita?", botones);
+
+    bot.on('callback_query', function onCallbackQuery(accionboton) {
+
+        const data = accionboton.data
+        const msg = accionboton.message
+        var listacatia = [];
+        listacatia.toString();
+
+        if (data == 'catia') {
+            
+            
+            bot.sendMessage(msg.chat.id, "Haz elegido anotarte en la lista de Catia. Por favor ingresa tu nombre:");
+            (function (item){
+                listacatia.push(msg.text.toString().indexOf(nombre));
+            });
+            console.log(catia);
+
+        };
+
+        if (data == 'aguasalud') {
+            bot.sendMessage(msg.chat.id, "Haz elegido anotarte en la lista de Agua Salud. Por favor ingresa tu nombre:");
+
+        };
+
+        if (data == 'mostarlista') {
+            
+            bot.sendMessage(msg.chat.id, "El primero de la lista es : " + listacatia[0]);
+            bot.sendMessage(msg.chat.id, "Hola, soy la accion del Boton 3");
+            bot.sendMessage(msg.chat.id, "El primero de la lista es : " + listacatia[0]);
+        };
+
+        if (data == 'boton4') {
+            bot.sendMessage(msg.chat.id, "Hola, soy la accion del Boton 4");
+
+        };
+    })
+
+
+});
+
+
+
+
+
+/* 
 //Funcionamiento de los botones
 bot.onText(/^\!botones/, function (msg) {
 
@@ -353,7 +450,7 @@ bot.on('location', (msg) => {
     console.log(msg.location.longitude);
 });
 
-
+ */
 
 
 
@@ -368,7 +465,7 @@ bot.on('location', (msg) => {
 
 
 //Inserte aquí el código a borrar.
-
+if (msg.new_chat_member.is_bot == true){ // acción }
 
 
 */
