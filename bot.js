@@ -274,7 +274,7 @@ bot.on('message', function (msg) {
 
     if (msg.new_chat_members != undefined) {
 
-        bot.sendMessage(msg.chat.id, "Hola " + msg.new_chat_member.first_name + ", bienvenido al grupo " + msg.chat.title);
+        bot.sendMessage(msg.chat.id, "Hablale " + msg.new_chat_member.first_name + ", bienvenido al grupo " + msg.chat.title);
 
     } else if (msg.left_chat_member != undefined) {
 
@@ -292,64 +292,72 @@ bot.on('message', function (msg) {
 
 bot.onText(/^\/start/, (msg) => {
     
-    var botones = {
-        reply_markup: {
-            inline_keyboard: [
-                [{
-                        text: "Catia",
-                        callback_data: 'catia'
-                    },
-                    {
-                        text: "Agua Salud",
-                        callback_data: 'aguasalud'
-                    },
-                    {
-                        text: "Mostrar lista",
-                        callback_data: 'mostarlista'
-                    }
+    if (msg.chat.type == 'private'){
+    
+        var botones = {
+            reply_markup: {
+                inline_keyboard: [
+                    [{
+                            text: "Catia",
+                            callback_data: 'catia'
+                        },
+                        {
+                            text: "Agua Salud",
+                            callback_data: 'aguasalud'
+                        },
+                        {
+                            text: "Mostrar lista",
+                            callback_data: 'mostarlista'
+                        }
+                    ]
                 ]
-            ]
-        }
-    };
+            }
+        };
 
-    bot.sendMessage(msg.chat.id, "Hola " + msg.from.first_name + ", tienes una cara de marico en esa foto. ¿En qué te puedo ayudar panita?", botones);
+        bot.sendMessage(msg.chat.id, "Hola " + msg.from.first_name + ", tienes una cara de marico en esa foto. ¿En qué te puedo ayudar panita?", botones);
 
-    bot.on('callback_query', function onCallbackQuery(accionboton) {
+        bot.on('callback_query', function onCallbackQuery(accionboton) {
 
-        const data = accionboton.data
-        const msg = accionboton.message
-        var listacatia = [];
-        listacatia.toString();
-
-        if (data == 'catia') {
+            const data = accionboton.data
+            const msg = accionboton.message
             
-            
-            bot.sendMessage(msg.chat.id, "Haz elegido anotarte en la lista de Catia. Por favor ingresa tu nombre:");
-            (function (item){
-                listacatia.push(msg.text.toString().indexOf(nombre));
-            });
-            console.log(catia);
+            //Array
+            var listacatia = ["javi", "Manuel", "Emmanuel", "Gregory"];
+            listacatia.toString();
+            var listaaguasalud = [];
+            listaaguasalud.toString();
 
-        };
+            if (data == 'catia') {
+                
+                
+                bot.sendMessage(msg.chat.id, "Haz elegido anotarte en la lista de Catia. Por favor ingresa tu nombre:");
+                bot.on(function (item){
+                    listacatia.push(msg.text.toString().indexOf());
+                });
 
-        if (data == 'aguasalud') {
-            bot.sendMessage(msg.chat.id, "Haz elegido anotarte en la lista de Agua Salud. Por favor ingresa tu nombre:");
+            };
 
-        };
+            if (data == 'aguasalud') {
+                bot.sendMessage(msg.chat.id, "Haz elegido anotarte en la lista de Agua Salud. Por favor ingresa tu nombre:");
 
-        if (data == 'mostarlista') {
-            
-            bot.sendMessage(msg.chat.id, "El primero de la lista es : " + listacatia[0]);
-            bot.sendMessage(msg.chat.id, "Hola, soy la accion del Boton 3");
-            bot.sendMessage(msg.chat.id, "El primero de la lista es : " + listacatia[0]);
-        };
+            };
 
-        if (data == 'boton4') {
-            bot.sendMessage(msg.chat.id, "Hola, soy la accion del Boton 4");
+            if (data == 'mostarlista') {
+                
+                for(i=0, k=1; i<3 ;i++, k++)
+                bot.sendMessage(msg.chat.id, k + ".- " + listacatia[i]);
+            };
 
-        };
-    })
+            if (data == 'boton4') {
+                bot.sendMessage(msg.chat.id, "Hola, soy la accion del Boton 4");
 
+            };
+        })
+    } else {
+
+        bot.sendMessage(msg.chat.id, "Comando solo disponible con el bot individual.");
+
+    }
 
 });
 
