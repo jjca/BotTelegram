@@ -39,11 +39,11 @@ const request = require('request');
 --------------------------------------------------------------------------
 */
 
-//Variables.
-
 //Habilita la opcion de responder mensaje por defecto.
 var opts = {
-    reply_markup: JSON.stringify({ force_reply: true }
+    reply_markup: JSON.stringify({
+        force_reply: true
+    }
 )};
 
 //Arrays de listas.
@@ -51,9 +51,9 @@ var listacatia = [];
 var listaaguasalud = [];
 
 //Comando /start que inicia la funcionalidad principal del bot.
-bot.onText(/^\/start/, (msg) => {
+bot.onText(/^\/start/, function(msg){
     
-    bot.getChatMember(msg.chat.id, msg.from.id).then(function (user){
+    bot.getChatMember(msg.chat.id, msg.from.id).then(function(user){
 
         //Verifica si el comando ha sido enviado en el chat privado del bot.
         if (msg.chat.type == 'private'){
@@ -78,16 +78,14 @@ bot.onText(/^\/start/, (msg) => {
                 }
             });
         }
-    });
-    
-        
+    });        
 });
 
 //Función de lectura de mensajes.
-bot.on('message', (msg) => {
+bot.on('message', function(msg){
         
     var verlista = "ver lista";
-    if (msg.text.toString().toLowerCase().indexOf(verlista) === 0) {
+    if (msg.text.toString().toLowerCase().indexOf(verlista) === 0){
         
         //Ciclo para enviar la lista del array "listacatia".
         var for_catia = "";
@@ -106,14 +104,14 @@ bot.on('message', (msg) => {
     }
         
     var catia = "catia";
-    if (msg.text.toString().toLowerCase().indexOf(catia) === 0) {
+    if (msg.text.toString().toLowerCase().indexOf(catia) === 0){
         
         //Mensaje de solicitud de nombre para la lista de Catia.
         bot.sendMessage(msg.from.id, "Has elegido la lista de Catia.\nPor favor introduce tu nombre.", opts)
-            .then(function(sended) {
+            .then(function(sended){
                 
                 //Escucha de solicitud del nombre.
-                bot.onReplyToMessage(sended.chat.id, sended.message_id, function (msg) {
+                bot.onReplyToMessage(sended.chat.id, sended.message_id, function(msg){
                     
                     //Función que introduce el nombre introducido en el array de "listacatia".
                     listacatia.push(msg.text.toString());
@@ -131,14 +129,14 @@ bot.on('message', (msg) => {
     }    
         
     var aguasalud = "agua salud";
-    if (msg.text.toString().toLowerCase().indexOf(aguasalud) === 0) {
+    if (msg.text.toString().toLowerCase().indexOf(aguasalud) === 0){
         
          //Mensaje de solicitud de nombre para la lista de Agua Salud.
         bot.sendMessage(msg.from.id, "Has elegido la lista de Agua Salud.\nPor favor introduce tu nombre.", opts)
-            .then(function(sended) {
+            .then(function(sended){
                 
                 //Escucha de solicitud del nombre.
-                bot.onReplyToMessage(sended.chat.id, sended.message_id, function (msg) {
+                bot.onReplyToMessage(sended.chat.id, sended.message_id, function(msg){
                     
                     //Función que introduce el nombre introducido en el array de "listaaguasalud".
                     listaaguasalud.push(msg.text.toString());
@@ -154,6 +152,174 @@ bot.on('message', (msg) => {
                 });
             });
     } 
+});
+
+//Comando para borrar las listas(Solo Administradores).
+bot.onText(/^\/borrar_listas/, function(msg){
+
+    bot.getChatMember(msg.chat.id, msg.from.id).then(function(user){
+
+        if ((msg.chat.type == 'supergroup') && ((msg.chat.id == '-1001267470378') || (msg.chat.id == '-1001373947855'))){
+
+            if ((user.status == 'creator') || (user.status == 'administrator')){
+
+                bot.sendMessage(msg.chat.id, "Por favor elige que lista quieres borrar.", {
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                {text: "Catia", callback_data: 'borrarcatia'},
+                                {text: "Agua Salud", callback_data: 'borraraguasalud'}
+                            ]
+                        ]
+                    }
+                });
+            
+                bot.on('callback_query', function(accionboton){
+
+                    const data = accionboton.data;
+                    const msg = accionboton.message;
+
+                    if (data == 'borrarcatia'){
+
+                        bot.sendMessage(msg.chat.id, "Has elegido borrar la lista de Catia. ¿Estás seguro?", {
+                            reply_markup: {
+                                inline_keyboard: [
+                                    [
+                                        {text: "Sí", callback_data: 'aceptarcatia'},
+                                        {text: "No", callback_data: 'cancelarcatia'}
+                                    ]
+                                ]
+                            }
+                        });
+                
+                        bot.on('callback_query', function(confirmacionboton){
+
+                            const data = confirmacionboton.data;
+                            const msg = confirmacionboton.message;
+
+                            if (data == 'aceptarcatia'){
+
+                                var for_catia = "";
+                                for(i=0; i<listacatia.length; i++){
+                                    for_catia += (i+1) + ".- " + listacatia[i] + "\n";
+                                }
+                                bot.sendMessage(msg.chat.id, "Se borrará esta lista:\nLista Catia:\n" + for_catia + "\n\n¿Estás seguro?", {
+                                    reply_markup: {
+                                        inline_keyboard: [
+                                            [
+                                                {text: "No", callback_data: 'cancelar2catia'},
+                                                {text: "Sí", callback_data: 'aceptar2catia'}
+                                            ]
+                                        ]
+                                    }
+                                });
+
+                                bot.on('callback_query', function(confirmacion2boton){
+
+                                    const data = confirmacion2boton.data;
+                                    const msg = confirmacion2boton.message;
+
+                                    if (data == 'cancelar2catia'){
+
+                                        bot.sendMessage(msg.chat.id, "La solicitud de borrado ha sido cancelada.");
+                                    }
+                                
+                                    if (data == 'aceptar2catia'){
+
+                                        listacatia = [];
+                                        var for_catia = "";
+                                        for(i=0; i<listacatia.length; i++){
+                                            for_catia += (i+1) + ".- " + listacatia[i] + "\n";
+                                        }
+                                        bot.sendMessage(msg.chat.id, "La lista de Catia se ha borrado exitosamente.\n\n" + for_catia);
+                                    }                              
+                                });
+                            }
+                            
+                            if (data == 'cancelarcatia'){
+
+                                bot.sendMessage(msg.chat.id, "La solicitud de borrado ha sido cancelada.");
+                            }
+                        });
+                    }
+
+                    if (data == 'borraraguasalud'){
+
+                        bot.sendMessage(msg.chat.id, "Has elegido borrar la lista de Agua Salud. ¿Estás seguro?", {
+                            reply_markup: {
+                                inline_keyboard: [
+                                    [
+                                        {text: "Sí", callback_data: 'aceptaraguasalud'},
+                                        {text: "No", callback_data: 'cancelaraguasalud'}
+                                    ]
+                                ]
+                            }
+                        });
+                
+                        bot.on('callback_query', function(confirmacionboton){
+
+                            const data = confirmacionboton.data;
+                            const msg = confirmacionboton.message;
+
+                            if (data == 'aceptaraguasalud'){
+
+                                var for_aguasalud = "";
+                                for(i=0; i<listaaguasalud.length; i++){
+                                    for_aguasalud += (i+1) + ".- " + listaaguasalud[i] + "\n";
+                                }
+                                bot.sendMessage(msg.chat.id, "Se borrará esta lista:\nLista Agua Salud:\n" + for_aguasalud + "\n\n¿Estás seguro?", {
+                                    reply_markup: {
+                                        inline_keyboard: [
+                                            [
+                                                {text: "No", callback_data: 'cancelar2aguasalud'},
+                                                {text: "Sí", callback_data: 'aceptar2aguasalud'}
+                                            ]
+                                        ]
+                                    }
+                                });
+
+                                bot.on('callback_query', function(confirmacion2boton){
+
+                                    const data = confirmacion2boton.data;
+                                    const msg = confirmacion2boton.message;
+
+                                    if (data == 'cancelar2aguasalud'){
+
+                                        bot.sendMessage(msg.chat.id, "La solicitud de borrado ha sido cancelada.");
+                                    }
+                                
+                                    if (data == 'aceptar2aguasalud'){
+
+                                        listaaguasalud = [];
+                                        var for_aguasalud = "";
+                                        for(i=0; i<listaaguasalud.length; i++){
+                                            for_aguasalud += (i+1) + ".- " + listaaguasalud[i] + "\n";
+                                        }
+                                        bot.sendMessage(msg.chat.id, "La lista de Agua Salud se ha borrado exitosamente.\n\n" + for_aguasalud);
+                                    }                              
+                                });
+                            }
+
+                            if (data == 'cancelaraguasalud'){
+
+                                bot.sendMessage(msg.chat.id, "La solicitud de borrado ha sido cancelada.");
+                            }
+                        });
+                    }
+                });
+            }
+            
+            else {
+
+                bot.sendMessage(msg.chat.id, "Disculpa " + msg.from.first_name + ", este comando solo está disponible para los administradores del grupo.");
+            }
+
+        }
+        else{
+
+            bot.sendMessage(msg.chat.id, "Disculpa " + msg.from.first_name + ", este comando solo se puede ejecutar en el grupo de la administración del bot.");
+        }
+    });
 });
 
 
@@ -174,7 +340,7 @@ bot.on('message', (msg) => {
 */
 
 //Función de lectura de un evento de escucha (mensaje).
-bot.on('message', (msg) => {
+bot.on('message', function(msg){
 
     //Constantes a usar en esta función:
     const chatId = msg.chat.id;
@@ -256,25 +422,25 @@ bot.on('message', (msg) => {
 */
 
 // Ver el ID del chat.
-bot.onText(/^\/chatid/, (msg) => {
+bot.onText(/^\/chatid/, function(msg){
     bot.sendMessage(msg.chat.id, "El ID de este chat es: " + msg.chat.id);
 });
 
 // Ver mi ID.
-bot.onText(/^\/myid/, (msg) => {
+bot.onText(/^\/myid/, function(msg){
     bot.sendMessage(msg.chat.id, "Tu id es: " + msg.from.id);
 });
 
 // Juego Ping Pong.
-bot.onText(/^\/ping/, (msg) => {
+bot.onText(/^\/ping/, function(msg){
     bot.sendMessage(msg.chat.id, "¡Pong!");
 });
-bot.onText(/^\/pong/, (msg) => {
+bot.onText(/^\/pong/, function(msg){
     bot.sendMessage(msg.chat.id, "¡Ping!");
 });
 
 // Enlace de grupo.
-bot.onText(/^\/enlace/, (msg) => {
+bot.onText(/^\/enlace/, function(msg){
 
     //Constantes a usar en esta función:
     const chatId = msg.chat.id;
@@ -306,12 +472,12 @@ bot.onText(/^\/enlace/, (msg) => {
 });
 
 //Mandar voice viejo lesbiano
-bot.onText(/^\/viejolesbiano/, (msg) => {
+bot.onText(/^\/viejolesbiano/, function(msg){
     bot.sendVoice(msg.chat.id, "./files/viejolesbiano.mp3");
 });
 
 //Mandar voice palo por ese culo
-bot.onText(/^\/paloporeseculo/, (msg) => {
+bot.onText(/^\/paloporeseculo/, function(msg){
     bot.sendVoice(msg.chat.id, "./files/paloporeseculo.mp3");
 });
 
@@ -329,7 +495,7 @@ bot.onText(/^\/mute (.+)/, function(msg, match){
     var tiempo = match[1];
     
     //Nos permite manejar el tiempo.
-    var ms = require('ms')
+    var ms = require('ms');
     
     //Manejaremos los privilegios que el usuario tendrá restringidos.
     const perms = {};
@@ -346,12 +512,12 @@ bot.onText(/^\/mute (.+)/, function(msg, match){
         if ((user.status == 'creator') || (user.status == 'administrator')){
             bot.restrictChatMember(chatId, replyId, {until_date: Math.round((Date.now() + ms(tiempo + "days")/1000))}, perms).then(function(result){
             bot.sendMessage(chatId, "El usuario " + replyName + " ha sido muteado durante " + tiempo + " días");
-            })
+            });
         } else {
             bot.sendMessage(chatId, "Lo siento " + fromName + " no eres administrador. Solo los administradores pueden usar este comando.");
             bot.deleteMessage(chatId, messageId);
         }
-    })
+    });
 });
 
 
@@ -379,13 +545,13 @@ bot.onText(/^\/unmute/, function(msg){
         if ((data.status == 'creator') || (data.status == 'administrator')){
             bot.restrictChatMember(chatId, replyId, perms).then(function(result){
                 bot.sendMessage(chatId, "El usuario " + replyName + " ha sido desmuteado");
-            })
+            });
         }
         else {
             bot.sendMessage(chatId, "Lo siento " + fromName + " no eres administrador. Solo los administradores pueden usar este comando.");
             bot.deleteMessage(chatId, messageId);
         }
-    })
+    });
 });
 
 
@@ -395,10 +561,8 @@ bot.onText(/^\/unmute/, function(msg){
 --------------------------------------------------------------------------
 */
 
-
-
 // Mensaje de bienvenida y de despedida
-bot.on('message', function (msg) {
+bot.on('message', function(msg) {
 
     if (msg.new_chat_members != undefined) {
 
@@ -410,7 +574,6 @@ bot.on('message', function (msg) {
 
     }
 });
-
 
 /*
 --------------------------------------------------------------------------
@@ -426,244 +589,55 @@ bot.on('message', function (msg) {
 
 //Inserte aquí el código a borrar.
 
-
-
-  
-  
-  // Matches /editable
-  bot.onText(/\/editable/, function onEditableText(msg) {
+///editable
+bot.onText(/\/editable/, function onEditableText(msg) {
     const opts = {
-      reply_markup: {
-        inline_keyboard: [
-          [
-            {
-              text: 'Edit Text',
-               // we shall check for this value when we listen
-               // for "callback_query"
-              callback_data: 'edit'
-            }
-          ]
-        ]
-      }
+        reply_markup: {
+            inline_keyboard: [
+                [
+                    {text: 'Editar Texto', callback_data: 'edit'}
+                ]
+            ]
+        }
     };
+    
     bot.sendMessage(msg.from.id, 'Original Text', opts);
-  });
+});
 
-  bot.on('callback_query', function onCallbackQuery(callbackQuery) {
+bot.on('callback_query', function onCallbackQuery(callbackQuery) {
     const action = callbackQuery.data;
     const msg = callbackQuery.message;
     const opts = {
-      chat_id: msg.chat.id,
-      message_id: msg.message_id,
+        chat_id: msg.chat.id,
+        message_id: msg.message_id,
     };
     let text;
   
     if (action === 'edit') {
-      text = 'Edited Text';
+        text = 'Texto editado';
     }
   
     bot.editMessageText(text, opts);
-  });
-
-/* 
-bot.onText(/^\/start/, (msg) => {
-    
-    if (msg.chat.type == 'private'){
-    
-        var botones = {
-            reply_markup: {
-                inline_keyboard: [
-                    [{
-                            text: "Catia",
-                            callback_data: 'catia'
-                        },
-                        {
-                            text: "Agua Salud",
-                            callback_data: 'aguasalud'
-                        },
-                        {
-                            text: "Mostrar lista",
-                            callback_data: 'mostarlista'
-                        }
-                    ]
-                ]
-            }
-        };
-
-        bot.sendMessage(msg.chat.id, "Hola " + msg.from.first_name + ", tienes una cara de marico en esa foto. ¿En qué te puedo ayudar panita?", botones);
-
-        bot.on('callback_query', function onCallbackQuery(accionboton) {
-
-            const data = accionboton.data
-            const msg = accionboton.message
-            const opts = {
-                reply_markup: JSON.stringify({ force_reply: true }),
-              };
-            let text;
-
-            //Array
-            var listacatia = ["javi", "Manuel", "Emmanuel", "Gregory"];
-            listacatia.toString();
-            var listaaguasalud = [];
-            listaaguasalud.toString();
-
-            if (data == 'catia') {
-                
-                
-                bot.sendMessage(msg.chat.id, "Has elegido anotarte en la lista de Catia. Por favor ingresa tu nombre:", opts)
-                .then(function(send){
-                    bot.onReplyToMessage(send.chat.id, send.message.id)
-                        .then( function (msg) {
-                        //listacatia.push(msg.text.toString());
-                        bot.sendMessage(msg.chat.id, "Hecho.");
-                        })
-                    })       
-
-            };
-
-            if (data == 'aguasalud') {
-                bot.sendMessage(msg.chat.id, "Haz elegido anotarte en la lista de Agua Salud. Por favor ingresa tu nombre:");
-
-            };
-
-            if (data == 'mostarlista') {
-                
-                for(i=0, k=1; i<=5 ;i++, k++)
-                bot.sendMessage(msg.chat.id, k + ".- " + listacatia[i]);
-            };
-
-            if (data == 'boton4') {
-                bot.sendMessage(msg.chat.id, "Hola, soy la accion del Boton 4");
-
-            };
-        })
-    } else {
-
-        bot.sendMessage(msg.chat.id, "Comando solo disponible con el bot individual.");
-
-    }
-
-});
-
- */
-
-
-
-/* 
-//Funcionamiento de los botones
-bot.onText(/^\!botones/, function (msg) {
-
-    var botones = {
-        reply_markup: {
-            inline_keyboard: [
-                [{
-                        text: "Boton 1",
-                        callback_data: 'boton1'
-                    },
-                    {
-                        text: "Boton 2",
-                        callback_data: 'boton2'
-                    }
-                ]
-            ]
-        }
-    };
-
-    bot.sendMessage(msg.chat.id, "Este es el texto de una publicación y debajo tengo botones", botones);
-
-    bot.sendMessage(msg.chat.id, "Este es un segundo mensaje, con los botones dentro de un mensaje", {
-        reply_markup: {
-            inline_keyboard: [
-                [{
-                        text: "Boton 3",
-                        callback_data: 'boton3'
-                    },
-                    {
-                        text: "Boton 4",
-                        callback_data: 'boton4'
-                    }
-                ]
-            ]
-        }
-    });
-
-    bot.on('callback_query', function onCallbackQuery(accionboton) {
-
-        const data = accionboton.data
-        const msg = accionboton.message
-
-        if (data == 'boton1') {
-            bot.sendMessage(msg.chat.id, "Hola, soy la accion del Boton 1");
-
-        };
-
-        if (data == 'boton2') {
-            bot.sendMessage(msg.chat.id, "Hola, soy la accion del Boton 2");
-
-        };
-
-        if (data == 'boton3') {
-            bot.sendMessage(msg.chat.id, "Hola, soy la accion del Boton 3");
-
-        };
-
-        if (data == 'boton4') {
-            bot.sendMessage(msg.chat.id, "Hola, soy la accion del Boton 4");
-
-        };
-    })
-});
-
-
-
-//Opciones en teclado (Solo funciona en chat privados, es decir, solo con el bot)
-bot.onText(/kakaroto/, (msg) => {
-    const opts = {
-        reply_markup: JSON.stringify({
-            keyboard: [
-                [{
-                    text: 'Location',
-                    request_location: true
-                }],
-                [{
-                    text: 'Contact',
-                    request_contact: true
-                }],
-            ],
-            resize_keyboard: true,
-            one_time_keyboard: true,
-        }),
-    };
-    bot.sendMessage(msg.chat.id, 'Solicitud de Contacto o Localización.', opts);
-});
-
-bot.on('location', (msg) => {
-    console.log(msg.location.latitude);
-    console.log(msg.location.longitude);
 });
 
 
 
 
 
- */
-
-
-/* //Mandar mensaje personalizado a un grupo
+//Mandar mensaje personalizado a un grupo
 bot.onText(/\/prueba/, (msg) => {
+    
     bot.sendMessage(msg.chat.id, "Introduce a donde quieres mandar el mensaje.", {
         reply_markup: {
             one_time_keyboard: true,
             resize_keyboard: true,
-            keyboard: [["\"Grupo de desarrollo de @Nalatbot.\""], ["\"Los bendecidos de Catia.\""]]
+            keyboard: [
+                ["\"Grupo de desarrollo de @Nalatbot.\""], 
+                ["\"Los bendecidos de Catia.\""]
+            ]
         }
     });
-
-
-
 });
-
-
 
 bot.on('message', (msg) => {
     
@@ -681,34 +655,12 @@ bot.on('message', (msg) => {
     if(msg.text.indexOf(LBDC) === 0){
         bot.sendMessage(-1001267470378, "test");
     }
-  });
+});
 
-  bot.onText(/\/echo (.+)/, function(msg, match) {
-    // 'msg' is the received Message from Telegram
-    // 'match' is the result of executing the regexp above on the text content
-    // of the message
-  
-    
-  
-  }); 
 
 
 
 
 if (msg.new_chat_member.is_bot == true){ // acción }
-
-bot.onText(/\/love/, function onLoveText(msg) {
-    const opts = {
-      reply_to_message_id: msg.message_id,
-      reply_markup: JSON.stringify({
-        keyboard: [
-          ['Yes, you are the bot of my life ❤'],
-          ['No, sorry there is another one...']
-        ]
-      })
-    };
-    bot.sendMessage(msg.chat.id, 'Do you love me?', opts);
-  });
-
 
 */
