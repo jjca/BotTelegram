@@ -50,6 +50,32 @@ var opts = {
 var listacatia = [];
 var listaaguasalud = [];
 
+//Función de tiempo
+function getDateTime(){
+    
+    var date = new Date();
+
+    var hour = date.getHours();
+    hour = (hour < 10 ? "0" : "") + hour;
+
+    var min = date.getMinutes();
+    min = (min < 10 ? "0" : "") + min;
+
+    var sec = date.getSeconds();
+    sec = (sec < 10 ? "0" : "") + sec;
+
+    var year = date.getFullYear();
+
+    var month = date.getMonth() + 1;
+    month = (month < 10 ? "0" : "") + month;
+
+    var day = date.getDate();
+    day = (day < 10 ? "0" : "") + day;
+
+    return hour + ":" + min;
+
+}
+
 //Comando /start que inicia la funcionalidad principal del bot.
 bot.onText(/^\/start/, function(msg){
     
@@ -106,51 +132,66 @@ bot.on('message', function(msg){
     var catia = "catia";
     if (msg.text.toString().toLowerCase().indexOf(catia) === 0){
         
-        //Mensaje de solicitud de nombre para la lista de Catia.
-        bot.sendMessage(msg.from.id, "Has elegido la lista de Catia.\nPor favor introduce tu nombre.", opts)
-            .then(function(sended){
-                
-                //Escucha de solicitud del nombre.
-                bot.onReplyToMessage(sended.chat.id, sended.message_id, function(msg){
+        
+        var fecha= new Date();
+        var hora_actual = fecha.getHours();
+        if (hora_actual >= 15){
+
+            //Mensaje de solicitud de nombre para la lista de Catia.
+            bot.sendMessage(msg.from.id, "Has elegido la lista de Catia.\nPor favor introduce tu nombre.", opts)
+                .then(function(sended){
                     
-                    //Función que introduce el nombre introducido en el array de "listacatia".
-                    listacatia.push(msg.text.toString());
-                    
-                    //Mensaje de opciones.
-                    bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de Catia.", {
-                        reply_markup: {
-                            keyboard: [["Catia", "Agua Salud"],   ["Ver listas"]],
-                            resize_keyboard: true,
-                            one_time_keyboard: false,
-                        }
+                    //Escucha de solicitud del nombre.
+                    bot.onReplyToMessage(sended.chat.id, sended.message_id, function(msg){
+                        
+                        //Función que introduce el nombre introducido en el array de "listacatia".
+                        listacatia.push(msg.text.toString() + " (Se anotó a las: " + getDateTime() + ").");
+                        
+                        //Mensaje de opciones.
+                        bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de Catia.", {
+                            reply_markup: {
+                                keyboard: [["Catia", "Agua Salud"],   ["Ver listas"]],
+                                resize_keyboard: true,
+                                one_time_keyboard: false,
+                            }
+                        });
                     });
                 });
-            });
+        }
+        else{
+
+            bot.sendMessage(msg.from.id, "Lo siento, debes esperar hasta las 3:00 pm para poder anotarte.");
+        }    
     }    
         
     var aguasalud = "agua salud";
     if (msg.text.toString().toLowerCase().indexOf(aguasalud) === 0){
         
-         //Mensaje de solicitud de nombre para la lista de Agua Salud.
-        bot.sendMessage(msg.from.id, "Has elegido la lista de Agua Salud.\nPor favor introduce tu nombre.", opts)
-            .then(function(sended){
-                
-                //Escucha de solicitud del nombre.
-                bot.onReplyToMessage(sended.chat.id, sended.message_id, function(msg){
+        var fecha= new Date();
+        var hora_actual = fecha.getHours();
+        if (hora_actual >= 15){
+
+            //Mensaje de solicitud de nombre para la lista de Agua Salud.
+            bot.sendMessage(msg.from.id, "Has elegido la lista de Agua Salud.\nPor favor introduce tu nombre.", opts)
+                .then(function(sended){
                     
-                    //Función que introduce el nombre introducido en el array de "listaaguasalud".
-                    listaaguasalud.push(msg.text.toString());
-                    
-                    //Mensaje de opciones.
-                    bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de Agua Salud.", {
-                        reply_markup: {
-                            keyboard: [["Catia", "Agua Salud"],   ["Ver listas"]],
-                            resize_keyboard: true,
-                            one_time_keyboard: false,
-                        }
+                    //Escucha de solicitud del nombre.
+                    bot.onReplyToMessage(sended.chat.id, sended.message_id, function(msg){
+                        
+                        //Función que introduce el nombre introducido en el array de "listaaguasalud".
+                        listaaguasalud.push(msg.text.toString() + " (Se anotó a las: " + getDateTime() + ").");
+                        
+                        //Mensaje de opciones.
+                        bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de Agua Salud.", {
+                            reply_markup: {
+                                keyboard: [["Catia", "Agua Salud"],   ["Ver listas"]],
+                                resize_keyboard: true,
+                                one_time_keyboard: false,
+                            }
+                        });
                     });
                 });
-            });
+        }
     } 
 });
 
@@ -562,24 +603,34 @@ bot.onText(/^\/unmute/, function(msg){
 */
 
 // Mensaje de bienvenida y de despedida
-bot.on('message', function(msg) {
+bot.on('message', function(msg){
 
-    if (msg.new_chat_members != undefined) {
+    if (msg.new_chat_members != undefined){
 
         bot.sendMessage(msg.chat.id, "Hablale " + msg.new_chat_member.first_name + ", bienvenido al grupo " + msg.chat.title);
-
-    } else if (msg.left_chat_member != undefined) {
+    } 
+    
+    if (msg.left_chat_member != undefined){
 
         bot.sendMessage(msg.chat.id, msg.left_chat_member.first_name + " desertó, ¡Traidor!");
-
     }
 });
 
 /*
 --------------------------------------------------------------------------
-|                             Zona de pruebas                            |
+|------------------------------------------------------------------------|
+|------------------------------------------------------------------------|
+|                            Zona de pruebas.                            |
+|------------------------------------------------------------------------|
+|------------------------------------------------------------------------|
 --------------------------------------------------------------------------
 */
+
+bot.onText(/^\/test/, function(msg){
+    bot.sendMessage(msg.chat.id, getDateTime());
+});
+
+
 
 /*
 --------------------------------------------------------------------------
