@@ -50,6 +50,10 @@ var opts = {
 var listacatia = [];
 var listaaguasalud = [];
 
+//Arrays de copias de seguridad de las listas.
+var lccopia = [];
+var lascopia = [];
+
 //Función de tiempo
 function getDateTime(){
     
@@ -73,7 +77,6 @@ function getDateTime(){
     day = (day < 10 ? "0" : "") + day;
 
     return hour + ":" + min;
-
 }
 
 //Comando /start que inicia la funcionalidad principal del bot.
@@ -126,7 +129,9 @@ bot.on('message', function(msg){
         }
         
         //Mensaje que se envia una vez se hayan ordenado los objetos de los arrays.
-        bot.sendMessage(msg.chat.id, "Lista Catia:\n" + for_catia + "\nLista Agua Salud:\n" + for_aguasalud);
+        bot.sendMessage(msg.chat.id, "*Lista Catia:*\n" + for_catia + "\n*Lista Agua Salud:*\n" + for_aguasalud, {
+            parse_mode: 'Markdown'
+        });
     }
         
     var catia = "catia";
@@ -147,12 +152,12 @@ bot.on('message', function(msg){
                         
                         if(msg.chat.id == '790564315'){
                             
-                            listacatia.push(msg.text.toString() + "❤ (Se anotó a las: " + getDateTime() + ").");
+                            listacatia.push(msg.text.toString() + " ❤ [Fue anotado por: " + msg.from.first_name + " " + (msg.from.id) + " a las: " + getDateTime() + "].");
                         }
                         else{
                             
                             //Función que introduce el nombre introducido en el array de "listacatia".
-                            listacatia.push(msg.text.toString() + " (Se anotó a las: " + getDateTime() + ").");
+                            listacatia.push(msg.text.toString() + " [Fue anotado por: " + msg.from.first_name + " " + (msg.from.id) + " a las: " + getDateTime() + "].");
                         }
                         //Mensaje de opciones.
                         bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de Catia.", {
@@ -187,7 +192,7 @@ bot.on('message', function(msg){
                     bot.onReplyToMessage(sended.chat.id, sended.message_id, function(msg){
                         
                         //Función que introduce el nombre introducido en el array de "listaaguasalud".
-                        listaaguasalud.push(msg.text.toString() + " (Se anotó a las: " + getDateTime() + ").");
+                        listaaguasalud.push(msg.text.toString() + " [Fue anotado por: " + msg.from.first_name + " " + (msg.from.id) + " a las: " + getDateTime() + "].");
                         
                         //Mensaje de opciones.
                         bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de Agua Salud.", {
