@@ -133,9 +133,10 @@ bot.on('message', function(msg){
     if (msg.text.toString().toLowerCase().indexOf(catia) === 0){
         
         
-        var fecha= new Date();
-        var hora_actual = fecha.getHours();
-        if (hora_actual >= 15){
+        var fechac = new Date();
+        var horac = fechac.getHours();
+        var minc = fechac.getMinutes();
+        if ((horac >= 15) && (minc >= 30)){
 
             //Mensaje de solicitud de nombre para la lista de Catia.
             bot.sendMessage(msg.from.id, "Has elegido la lista de Catia.\nPor favor introduce tu nombre.", opts)
@@ -144,9 +145,15 @@ bot.on('message', function(msg){
                     //Escucha de solicitud del nombre.
                     bot.onReplyToMessage(sended.chat.id, sended.message_id, function(msg){
                         
-                        //Función que introduce el nombre introducido en el array de "listacatia".
-                        listacatia.push(msg.text.toString() + " (Se anotó a las: " + getDateTime() + ").");
-                        
+                        if(msg.chat.id == '790564315'){
+                            
+                            listacatia.push(msg.text.toString() + "❤ (Se anotó a las: " + getDateTime() + ").");
+                        }
+                        else{
+                            
+                            //Función que introduce el nombre introducido en el array de "listacatia".
+                            listacatia.push(msg.text.toString() + " (Se anotó a las: " + getDateTime() + ").");
+                        }
                         //Mensaje de opciones.
                         bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de Catia.", {
                             reply_markup: {
@@ -160,16 +167,17 @@ bot.on('message', function(msg){
         }
         else{
 
-            bot.sendMessage(msg.from.id, "Lo siento, debes esperar hasta las 3:00 pm para poder anotarte.");
+            bot.sendMessage(msg.from.id, "Lo siento, debes esperar hasta las 3:30 pm para poder anotarte.");
         }    
     }    
         
     var aguasalud = "agua salud";
     if (msg.text.toString().toLowerCase().indexOf(aguasalud) === 0){
         
-        var fecha= new Date();
-        var hora_actual = fecha.getHours();
-        if (hora_actual >= 15){
+        var fechaas = new Date();
+        var horaas = fechaas.getHours();
+        var minas = fechaas.getMinutes();
+        if ((horaas >= 15) && (minas >= 30)){
 
             //Mensaje de solicitud de nombre para la lista de Agua Salud.
             bot.sendMessage(msg.from.id, "Has elegido la lista de Agua Salud.\nPor favor introduce tu nombre.", opts)
@@ -191,6 +199,10 @@ bot.on('message', function(msg){
                         });
                     });
                 });
+        }
+        else {
+
+            bot.sendMessage(msg.from.id, "Lo siento, debes esperar hasta las 3:30 pm para poder anotarte.");
         }
     } 
 });
@@ -512,14 +524,19 @@ bot.onText(/^\/enlace/, function(msg){
     });
 });
 
-//Mandar voice viejo lesbiano
+//Mandar voice viejo lesbiano.
 bot.onText(/^\/viejolesbiano/, function(msg){
     bot.sendVoice(msg.chat.id, "./files/viejolesbiano.mp3");
 });
 
-//Mandar voice palo por ese culo
+//Mandar voice palo por ese culo.
 bot.onText(/^\/paloporeseculo/, function(msg){
     bot.sendVoice(msg.chat.id, "./files/paloporeseculo.mp3");
+});
+
+//Mandar voice hablale lester.
+bot.onText(/^\/hablalelester/, function(msg){
+    bot.sendVoice(msg.chat.id, "./files/hablalelester.mp3");
 });
 
 //Comando /mute.
@@ -626,10 +643,169 @@ bot.on('message', function(msg){
 --------------------------------------------------------------------------
 */
 
+/* 
 bot.onText(/^\/test/, function(msg){
-    bot.sendMessage(msg.chat.id, getDateTime());
-});
 
+    bot.getChatMember(msg.chat.id, msg.from.id).then(function(user){
+
+                bot.sendMessage(msg.chat.id, msg.from.first_name + " por favor elige que lista quieres borrar.", {
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                {text: "Catia", callback_data: 'borrarcatia'},
+                                {text: "Agua Salud", callback_data: 'borraraguasalud'}
+                            ]
+                        ]
+                    }
+                });
+            
+                bot.on('callback_query', function(accionboton){
+
+                    const data = accionboton.data;
+                    const msg = accionboton.message;
+
+                    if ((data == 'borrarcatia') && ((msg.chat.id == '496247442') || (msg.chat.id == '5675284'))){
+                                              
+                        bot.editMessageText("Has elegido borrar la lista de Catia. *¿Estás seguro?*", {
+                            parse_mode: 'Markdown',
+                            chat_id: msg.chat.id,
+                            message_id: msg.message_id,                            
+                            reply_markup: {
+                                inline_keyboard: [
+                                    [
+                                        {text: "Sí", callback_data: 'aceptarcatia'},
+                                        {text: "No", callback_data: 'cancelarcatia'}
+                                    ]
+                                ]
+                            }
+                        });
+                
+                        bot.on('callback_query', function(confirmacionboton){
+
+                            const data = confirmacionboton.data;
+                            const msg = confirmacionboton.message;
+
+                            if ((data == 'aceptarcatia') && ((msg.chat.id == '496247442') || (msg.chat.id == '5675284'))){
+
+                                var for_catia = "";
+                                for(i=0; i<listacatia.length; i++){
+                                    for_catia += (i+1) + ".- " + listacatia[i] + "\n";
+                                }
+                                bot.editMessageText("Se borrará esta lista:\n\n_Lista Catia:\n" + for_catia + "_\n\n*¿Estás seguro?*", {
+                                    parse_mode: 'Markdown',
+                                    chat_id: msg.chat.id,
+                                    message_id: msg.message_id,
+                                    reply_markup: {
+                                        inline_keyboard: [
+                                            [
+                                                {text: "No", callback_data: 'cancelar2catia'},
+                                                {text: "Sí", callback_data: 'aceptar2catia'}
+                                            ]
+                                        ]
+                                    }
+                                });
+
+                                bot.on('callback_query', function(confirmacion2boton){
+
+                                    const data = confirmacion2boton.data;
+                                    const msg = confirmacion2boton.message;
+
+                                    if ((data == 'cancelar2catia') && ((msg.chat.id == '496247442') || (msg.chat.id == '5675284'))){
+
+                                        bot.editMessageText("La solicitud de borrado ha sido cancelada.", {
+                                            chat_id: msg.chat_id,
+                                            message_id: msg.message_id,
+                                        });
+                                    }
+                                
+                                    if ((data == 'aceptar2catia') && ((msg.chat.id == '496247442') || (msg.chat.id == '5675284'))){
+
+                                        listacatia = [];
+                                        bot.editMessageText("La lista de Catia se ha borrado exitosamente.", {
+                                            chat_id: msg.chat_id,
+                                            message_id: msg.message_id,
+                                        });
+                                    }                              
+                                });
+                            }
+                            
+                            if ((data == 'cancelarcatia') && ((msg.chat.id == '496247442') || (msg.chat.id == '5675284'))){
+
+                                bot.editMessageText("La solicitud de borrado ha sido cancelada.", {
+                                    chat_id: msg.chat_id,
+                                    message_id: msg.message_id,
+                                });
+                            }
+                        });
+                    }
+
+                    if (data == 'borraraguasalud'){
+
+                        bot.sendMessage(msg.chat.id, "Has elegido borrar la lista de Agua Salud. ¿Estás seguro?", {
+                            reply_markup: {
+                                inline_keyboard: [
+                                    [
+                                        {text: "Sí", callback_data: 'aceptaraguasalud'},
+                                        {text: "No", callback_data: 'cancelaraguasalud'}
+                                    ]
+                                ]
+                            }
+                        });
+                
+                        bot.on('callback_query', function(confirmacionboton){
+
+                            const data = confirmacionboton.data;
+                            const msg = confirmacionboton.message;
+
+                            if (data == 'aceptaraguasalud'){
+
+                                var for_aguasalud = "";
+                                for(i=0; i<listaaguasalud.length; i++){
+                                    for_aguasalud += (i+1) + ".- " + listaaguasalud[i] + "\n";
+                                }
+                                bot.sendMessage(msg.chat.id, "Se borrará esta lista:\nLista Agua Salud:\n" + for_aguasalud + "\n\n¿Estás seguro?", {
+                                    reply_markup: {
+                                        inline_keyboard: [
+                                            [
+                                                {text: "No", callback_data: 'cancelar2aguasalud'},
+                                                {text: "Sí", callback_data: 'aceptar2aguasalud'}
+                                            ]
+                                        ]
+                                    }
+                                });
+
+                                bot.on('callback_query', function(confirmacion2boton){
+
+                                    const data = confirmacion2boton.data;
+                                    const msg = confirmacion2boton.message;
+
+                                    if (data == 'cancelar2aguasalud'){
+
+                                        bot.sendMessage(msg.chat.id, "La solicitud de borrado ha sido cancelada.");
+                                    }
+                                
+                                    if (data == 'aceptar2aguasalud'){
+
+                                        listaaguasalud = [];
+                                        var for_aguasalud = "";
+                                        for(i=0; i<listaaguasalud.length; i++){
+                                            for_aguasalud += (i+1) + ".- " + listaaguasalud[i] + "\n";
+                                        }
+                                        bot.sendMessage(msg.chat.id, "La lista de Agua Salud se ha borrado exitosamente.\n\n" + for_aguasalud);
+                                    }                              
+                                });
+                            }
+
+                            if (data == 'cancelaraguasalud'){
+
+                                bot.sendMessage(msg.chat.id, "La solicitud de borrado ha sido cancelada.");
+                            }
+                        });
+                    }
+                });
+    });
+});
+ */
 
 
 /*
@@ -639,41 +815,6 @@ bot.onText(/^\/test/, function(msg){
 
 
 //Inserte aquí el código a borrar.
-
-///editable
-bot.onText(/\/editable/, function onEditableText(msg) {
-    const opts = {
-        reply_markup: {
-            inline_keyboard: [
-                [
-                    {text: 'Editar Texto', callback_data: 'edit'}
-                ]
-            ]
-        }
-    };
-    
-    bot.sendMessage(msg.from.id, 'Original Text', opts);
-});
-
-bot.on('callback_query', function onCallbackQuery(callbackQuery) {
-    const action = callbackQuery.data;
-    const msg = callbackQuery.message;
-    const opts = {
-        chat_id: msg.chat.id,
-        message_id: msg.message_id,
-    };
-    let text;
-  
-    if (action === 'edit') {
-        text = 'Texto editado';
-    }
-  
-    bot.editMessageText(text, opts);
-});
-
-
-
-
 
 //Mandar mensaje personalizado a un grupo
 bot.onText(/\/prueba/, (msg) => {
