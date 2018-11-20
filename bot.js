@@ -2,7 +2,7 @@
 const TelegramBot = require('node-telegram-bot-api');
 
 //Token proporcionado por FatherBot en Telegram.
-const token = '666343994:AAEWabHvGNm9GYzSRyZCgSoeMs75Eey6brg';
+const token = '666343994:AAGN7S33L21bTtTovw43d5VRZx7ci9ScdE8';
 
 // El bot usa 'polling' para obtener actualizaciones.
 const bot = new TelegramBot(token, {
@@ -41,6 +41,7 @@ const request = require('request');
 
 //Habilita la opcion de responder mensaje por defecto.
 var opts = {
+    parse_mode: 'Markdown',
     reply_markup: JSON.stringify({
         force_reply: true
     }
@@ -79,6 +80,12 @@ function getDateTime(){
     return hour + ":" + min;
 }
 
+//Función FAQ
+function FAQ(){
+
+    return "*¿Quienes son los administradores del bot?*\n\n_Manuel Escalante (@MaEscalanteHe) y Javier Medina (@JBadBunny)._", {parse_mode: 'Markdown'};
+}
+
 //Comando /start que inicia la funcionalidad principal del bot.
 bot.onText(/^\/start/, function(msg){
     
@@ -88,9 +95,10 @@ bot.onText(/^\/start/, function(msg){
         if (msg.chat.type == 'private'){
             
             //Mensaje de opciones en formato de teclado.
-            bot.sendMessage(msg.chat.id, "Hola " + msg.from.first_name + ", tienes una cara de marico en esa foto. ¿En qué te puedo ayudar panita?", {
+            bot.sendMessage(msg.chat.id, "✨ *¡Hola " + msg.from.first_name + "!* ✨\n\n‼️*Recuerda leer las reglas.*‼️\n\nPor favor selecciona una opción.", {
+                parse_mode: 'Markdown',
                 reply_markup: {
-                    keyboard: [["Catia", "Agua Salud"],   ["Ver listas"]],
+                    keyboard: [["Reglas ⚠️"],    ["Catia 📝", "Agua Salud 📝"],   ["Ver listas 👁"]],
                     resize_keyboard: true,
                     one_time_keyboard: false,
                 }
@@ -99,9 +107,10 @@ bot.onText(/^\/start/, function(msg){
         //En caso contrario avisa al usuario y el bot le escribe al usuario automaticamente.
         else {
             bot.sendMessage(msg.chat.id, "Lo siento " + msg.from.first_name + " este comando solo está disponible en el chat personal (@Nalatbot).");
-            bot.sendMessage(msg.from.id, "Hola " + msg.from.first_name + ", tienes una cara de marico en esa foto. ¿En qué te puedo ayudar panita?", {
+            bot.sendMessage(msg.from.id, "✨ *¡Hola " + msg.from.first_name + "!* ✨\n\n‼️*Recuerda leer las reglas.*‼️\nLa opción para anotarte en una lista solo puede ser en este chat.\n\nPor favor selecciona una opción.", {
+                parse_mode: 'Markdown',
                 reply_markup: {
-                    keyboard: [["Catia", "Agua Salud"],   ["Ver listas"]],
+                    keyboard: [["Reglas ⚠️"],    ["Catia 📝", "Agua Salud 📝"],   ["Ver listas 👁"]],
                     resize_keyboard: true,
                     one_time_keyboard: false,
                 }
@@ -113,25 +122,29 @@ bot.onText(/^\/start/, function(msg){
 //Función de lectura de mensajes.
 bot.on('message', function(msg){
         
+    var reglas = "reglas";
+    if (msg.text.toString().toLowerCase().indexOf(reglas) === 0){
+
+        bot.sendMessage(msg.chat.id, "*Reglas*\n\n`En Construcción`", {parse_mode:'Markdown'});
+    }
+        
     var verlista = "ver lista";
     if (msg.text.toString().toLowerCase().indexOf(verlista) === 0){
         
         //Ciclo para enviar la lista del array "listacatia".
         var for_catia = "";
         for(i=0; i<listacatia.length; i++){
-            for_catia += (i+1) + ".- " + listacatia[i] + "\n";
+            for_catia += "*" + (i+1) + ".-* " + listacatia[i] + "\n";
         }
         
         //Ciclo para enviar la lista del array "listaaguasalud".
         var for_aguasalud = "";
         for(i=0; i<listaaguasalud.length; i++){
-            for_aguasalud += (i+1) + ".- " + listaaguasalud[i] + "\n";
+            for_aguasalud += "*" + (i+1) + ".-* " + listaaguasalud[i] + "\n";
         }
         
         //Mensaje que se envia una vez se hayan ordenado los objetos de los arrays.
-        bot.sendMessage(msg.chat.id, "*Lista Catia:*\n" + for_catia + "\n*Lista Agua Salud:*\n" + for_aguasalud, {
-            parse_mode: 'Markdown'
-        });
+        bot.sendMessage(msg.chat.id, "*Lista Catia:*\n" + for_catia + "\n*Lista Agua Salud:*\n" + for_aguasalud, {parse_mode: 'Markdown'});
     }
         
     var catia = "catia";
@@ -144,7 +157,7 @@ bot.on('message', function(msg){
         if ((horac >= 15) && (minc >= 30)){
 
             //Mensaje de solicitud de nombre para la lista de Catia.
-            bot.sendMessage(msg.from.id, "Has elegido la lista de Catia.\nPor favor introduce tu nombre.", opts)
+            bot.sendMessage(msg.from.id, "Has elegido la lista de *Catia*.\nPor favor introduce tu nombre.", opts)
                 .then(function(sended){
                     
                     //Escucha de solicitud del nombre.
@@ -152,17 +165,18 @@ bot.on('message', function(msg){
                         
                         if(msg.chat.id == '790564315'){
                             
-                            listacatia.push(msg.text.toString() + " ❤ [Fue anotado por: " + msg.from.first_name + " " + (msg.from.id) + " a las: " + getDateTime() + "].");
+                            listacatia.push(msg.text.toString() + " ❤ - (Fue anotado por: *" + msg.from.first_name + "* ❤ (_" + msg.from.id + "_) a las: *" + getDateTime() + "*).");
                         }
                         else{
                             
                             //Función que introduce el nombre introducido en el array de "listacatia".
-                            listacatia.push(msg.text.toString() + " [Fue anotado por: " + msg.from.first_name + " " + (msg.from.id) + " a las: " + getDateTime() + "].");
+                            listacatia.push(msg.text.toString() + " - (Fue anotado por: *" + msg.from.first_name + "* (_" + msg.from.id + "_) a las: *" + getDateTime() + "*).");
                         }
                         //Mensaje de opciones.
-                        bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de Catia.", {
+                        bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de *Catia*.", {
+                            parse_mode: 'Markdown',
                             reply_markup: {
-                                keyboard: [["Catia", "Agua Salud"],   ["Ver listas"]],
+                                keyboard: [["Reglas ⚠️"],    ["Catia 📝", "Agua Salud 📝"],   ["Ver listas 👁"]],
                                 resize_keyboard: true,
                                 one_time_keyboard: false,
                             }
@@ -172,7 +186,7 @@ bot.on('message', function(msg){
         }
         else{
 
-            bot.sendMessage(msg.from.id, "Lo siento, debes esperar hasta las 3:30 pm para poder anotarte.");
+            bot.sendMessage(msg.from.id, "Lo siento " + msg.from.first_name + ", debes esperar hasta las *3:30 PM* para poder anotarte.", {parse_mode: 'Markdown'});
         }    
     }    
         
@@ -185,19 +199,19 @@ bot.on('message', function(msg){
         if ((horaas >= 15) && (minas >= 30)){
 
             //Mensaje de solicitud de nombre para la lista de Agua Salud.
-            bot.sendMessage(msg.from.id, "Has elegido la lista de Agua Salud.\nPor favor introduce tu nombre.", opts)
+            bot.sendMessage(msg.from.id, "Has elegido la lista de *Agua Salud*.\nPor favor introduce tu nombre.", opts)
                 .then(function(sended){
                     
                     //Escucha de solicitud del nombre.
                     bot.onReplyToMessage(sended.chat.id, sended.message_id, function(msg){
                         
                         //Función que introduce el nombre introducido en el array de "listaaguasalud".
-                        listaaguasalud.push(msg.text.toString() + " [Fue anotado por: " + msg.from.first_name + " " + (msg.from.id) + " a las: " + getDateTime() + "].");
+                        listaaguasalud.push(msg.text.toString() + " - (Fue anotado por: *" + msg.from.first_name + "* (_" + msg.from.id + "_) a las: *" + getDateTime() + "*).");
                         
                         //Mensaje de opciones.
                         bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de Agua Salud.", {
                             reply_markup: {
-                                keyboard: [["Catia", "Agua Salud"],   ["Ver listas"]],
+                                keyboard: [["Reglas ⚠️"],    ["Catia 📝", "Agua Salud 📝"],   ["Ver listas 👁"]],
                                 resize_keyboard: true,
                                 one_time_keyboard: false,
                             }
@@ -207,7 +221,7 @@ bot.on('message', function(msg){
         }
         else {
 
-            bot.sendMessage(msg.from.id, "Lo siento, debes esperar hasta las 3:30 pm para poder anotarte.");
+            bot.sendMessage(msg.from.id, "Lo siento " + msg.from.first_name + ", debes esperar hasta las *3:30 PM* para poder anotarte.", {parse_mode: 'Markdown'});
         }
     } 
 });
@@ -497,6 +511,37 @@ bot.onText(/^\/pong/, function(msg){
     bot.sendMessage(msg.chat.id, "¡Ping!");
 });
 
+//Repositorio
+bot.onText(/^\/repositorio/, function(msg){
+    bot.sendMessage(msg.chat.id, "https://github.com/MaEscalanteHe/BotTelegram");
+});
+
+//FAQ
+bot.onText(/^\/faq/, function(msg){
+    bot.sendMessage(msg.chat.id, "*¿Quienes son los administradores del bot?*\n\n_Manuel Escalante_ (@MaEscalanteHe) _y Javier Medina_ (@JBadBunny).", {parse_mode: 'Markdown'});
+});
+
+//Reglas
+bot.onText(/^\/reglas/, function(msg){
+    bot.sendMessage(msg.chat.id, "*Reglas*\n\n`En Construcción`", {parse_mode:'Markdown'});
+});
+
+//Mandar voice viejo lesbiano.
+bot.onText(/^\/viejolesbiano/, function(msg){
+    bot.sendVoice(msg.chat.id, "./files/viejolesbiano.mp3");
+});
+
+//Mandar voice palo por ese culo.
+bot.onText(/^\/paloporeseculo/, function(msg){
+    bot.sendVoice(msg.chat.id, "./files/paloporeseculo.mp3");
+});
+
+//Mandar voice hablale lester.
+bot.onText(/^\/hablalelester/, function(msg){
+    bot.sendVoice(msg.chat.id, "./files/hablalelester.mp3");
+});
+
+
 // Enlace de grupo.
 bot.onText(/^\/enlace/, function(msg){
 
@@ -527,21 +572,6 @@ bot.onText(/^\/enlace/, function(msg){
             bot.deleteMessage(chatId, messageId);
         }
     });
-});
-
-//Mandar voice viejo lesbiano.
-bot.onText(/^\/viejolesbiano/, function(msg){
-    bot.sendVoice(msg.chat.id, "./files/viejolesbiano.mp3");
-});
-
-//Mandar voice palo por ese culo.
-bot.onText(/^\/paloporeseculo/, function(msg){
-    bot.sendVoice(msg.chat.id, "./files/paloporeseculo.mp3");
-});
-
-//Mandar voice hablale lester.
-bot.onText(/^\/hablalelester/, function(msg){
-    bot.sendVoice(msg.chat.id, "./files/hablalelester.mp3");
 });
 
 //Comando /mute.
@@ -629,12 +659,14 @@ bot.on('message', function(msg){
 
     if (msg.new_chat_members != undefined){
 
-        bot.sendMessage(msg.chat.id, "Hablale " + msg.new_chat_member.first_name + ", bienvenido al grupo " + msg.chat.title);
+        var nameNewMember = msg.new_chat_member.first_name;
+        bot.sendMessage(msg.chat.id, "Hablale " + nameNewMember + ", bienvenid@ al grupo " + msg.chat.title);
     } 
     
     if (msg.left_chat_member != undefined){
 
-        bot.sendMessage(msg.chat.id, msg.left_chat_member.first_name + " desertó, ¡Traidor!");
+        var nameLeftMember = msg.left_chat_member.first_name;
+        bot.sendMessage(msg.chat.id, nameLeftMember + " desertó, ¡Traidor!");
     }
 });
 
@@ -822,18 +854,11 @@ bot.onText(/^\/test/, function(msg){
 //Inserte aquí el código a borrar.
 
 //Mandar mensaje personalizado a un grupo
-bot.onText(/\/prueba/, (msg) => {
+bot.onText(/\/echo (.+)/, (msg, match) => {
+    const resp = match[1]
+
+    bot.sendMessage(-1001267470378, resp);
     
-    bot.sendMessage(msg.chat.id, "Introduce a donde quieres mandar el mensaje.", {
-        reply_markup: {
-            one_time_keyboard: true,
-            resize_keyboard: true,
-            keyboard: [
-                ["\"Grupo de desarrollo de @Nalatbot.\""], 
-                ["\"Los bendecidos de Catia.\""]
-            ]
-        }
-    });
 });
 
 bot.on('message', (msg) => {
@@ -861,3 +886,10 @@ bot.on('message', (msg) => {
 if (msg.new_chat_member.is_bot == true){ // acción }
 
 */
+//Mandar mensaje personalizado a un grupo
+bot.onText(/\/echo (.+)/, (msg, match) => {
+    const resp = match[1]
+
+    bot.sendMessage(-1001267470378, resp);
+    
+});
