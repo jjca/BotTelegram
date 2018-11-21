@@ -440,11 +440,6 @@ bot.on('message', function(msg){
         bot.sendMessage(chatId, "Cállate tu, viejo lesbiano.");
     }
 
-    var nalatmarico = "nalat, ¿eres marico?";
-    if (msg.text.toString().toLowerCase().indexOf(nalatmarico) === 0) {
-        bot.sendMessage(chatId, "Un poquito menos que el creador.");
-    }
-
     var marico = ["nalat, ¿gregory es marico", "nalat, ¿manuel es marico?", "nalat, ¿lester es marico?"];
     if ((msg.text.toString().toLowerCase().indexOf(marico[0]) === 0) || (msg.text.toString().toLowerCase().indexOf(marico[1]) === 0) || (msg.text.toString().toLowerCase().indexOf(marico[2]) === 0)) {
         bot.sendMessage(chatId, "Sí, es tremendo goy");
@@ -475,12 +470,72 @@ bot.on('message', function(msg){
         bot.sendPhoto(chatId, "./files/sebin.jpg");
     }
 
+    var dtdm = "este bot dominará el mundo";
+    if (msg.text.toString().toLowerCase().includes(dtdm)) {
+        bot.sendPhoto(chatId, "./files/dominiototaldelmundo.jpg");
+    }
+
+    var bdv = "nalat es un bot";
+    if (msg.text.toString().toLowerCase().includes(bdv)) {
+        bot.sendMessage(chatId, "¡Mentira!, yo soy un niño de verdad.");
+    }
+
+    var corte18 = "corte 18";
+    if (msg.text.toString().toLowerCase().includes(corte18)) {
+        bot.sendMessage(chatId, "Sí alguien vuelve a decir 'Corte 18' le meto un tiro.");
+    }
+
+    var med = "me dolió";
+    if (msg.text.toString().toLowerCase().includes(med)) {
+        bot.sendMessage(chatId, "Ponte una curita pues.");
+    }
+
+    var parcela = ["¿qué es una parcela?", "¿que es una parcela", "que es una parcela?", "qué es una parcela?"];
+    if (msg.text.toString().toLowerCase().includes(parcela[0]) || msg.text.toString().toLowerCase().includes(parcela[1]) || msg.text.toString().toLowerCase().includes(parcela[2]) || msg.text.toString().toLowerCase().includes(parcela[3])) {
+        bot.sendMessage(chatId, "Donde se mete el ganado.");
+    }
+
+    var pmmgva = "por mamagueva";
+    if (msg.text.toString().toLowerCase().includes(pmmgva)) {
+        bot.sendVoice(chatId, "./files/mamagueva.mp3");
+    }
+
+    var maricodv = "marico de verdad";
+    if (msg.text.toString().toLowerCase().includes(maricodv)) {
+        bot.sendVoice(chatId, "./files/marico.mp3");
+    }
+    
+    var volo = "voló";
+    if (msg.text.toString().toLowerCase().includes(volo)) {
+        bot.sendVoice(chatId, "./files/volo.mp3");
+    }
+
+    var enanomarico = ["qué vas a saber tú", "qué vas a saber tu", "que vas a saber tú", "que vas a saber tu"];
+    if (msg.text.toString().toLowerCase().includes(enanomarico[0]) || msg.text.toString().toLowerCase().includes(enanomarico[1]) || msg.text.toString().toLowerCase().includes(enanomarico[2]) || msg.text.toString().toLowerCase().includes(enanomarico[3])) {
+        bot.sendVoice(chatId, "./files/enanomarico.mp3");
+    }
+
+    var nalatmarico = "nalat, ¿eres marico?";
+    if (msg.text.toString().toLowerCase().indexOf(nalatmarico) === 0) {
+        bot.sendVoice(chatId, "./files/nosoymarico.mp3");
+    }
+
+    var matalosatodos = "matalos a todos";
+    if (msg.text.toString().toLowerCase().includes(matalosatodos)) {
+        bot.sendVoice(chatId, "./files/matalosatodos.mp3");
+    }
+
+    var ggg = "nalat, lanzate una ahí";
+    if (msg.text.toString().toLowerCase().indexOf(ggg) === 0) {
+        bot.sendVoice(chatId, "./files/gafogafogafo.mp3");
+    }
 
     // Palabras prohibidas.
     var sban = "hijo de puta";
     if (msg.text.toString().toLowerCase().includes(sban)) {
         bot.kickChatMember(chatId, fromId);
-        bot.sendMessage(chatId, fromName + " Ha sido explusad@ por becerr@.");
+        bot.sendMessage(chatId, fromName + " ha sido explusad@ por becerr@.");
+        bot.sendMessage(msg.chat.id, "./files/mamagueva.mp3");
         bot.unbanChatMember(chatId, fromId);
     }
 
