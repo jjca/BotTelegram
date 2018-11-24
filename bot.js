@@ -2,7 +2,7 @@
 const TelegramBot = require("node-telegram-bot-api");
 
 //Token proporcionado por FatherBot en Telegram.
-const token = "666343994:AAGN7S33L21bTtTovw43d5VRZx7ci9ScdE8";
+const token = "TOKEN-API";
 
 // El bot usa 'polling' para obtener actualizaciones.
 const bot = new TelegramBot(token, {
