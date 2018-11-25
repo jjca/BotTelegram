@@ -493,6 +493,21 @@ bot.on("message", function(msg) {
         bot.sendVoice(chatId, "./files/gafogafogafo.mp3");
     }
 
+    var estudiar = "vamos a estudiar";
+    if (msg.text.toString().toLowerCase().indexOf(estudiar) === 0) {
+        bot.sendVoice(chatId, "./files/vamosaestudiar.mp3");
+    }
+
+    var meca = "es la meca de la irreverencia";
+    if (msg.text.toString().toLowerCase().indexOf(meca) === 0) {
+        bot.sendVoice(chatId, "./files/eslamecadelairreverencia.mp3");
+    }
+
+
+    var flavio = "flavio";
+    if (msg.text.toString().toLowerCase().indexOf(flavio) === 0) {
+        bot.sendVideoNote(chatId, "./files/flavio.mp4");
+    }
 
     // Palabras prohibidas.
     var sban = "hijo de puta";
