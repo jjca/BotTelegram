@@ -221,7 +221,7 @@ bot.on("message", function(msg) {
         var fechac = new Date();
         var horac = fechac.getHours();
         var minc = fechac.getMinutes();
-        if (horac >= 18 && minc >= 25) {
+        if (horac >= 15 && minc >= 30) {
             
             //Mensaje de solicitud de nombre para la lista de Catia.
             bot.sendMessage(msg.from.id, "Has elegido la lista de *Catia*.\nPor favor introduce tu nombre.", opts).then(function(sended) {
@@ -268,7 +268,7 @@ bot.on("message", function(msg) {
         var fechaas = new Date();
         var horaas = fechaas.getHours();
         var minas = fechaas.getMinutes();
-        if (horaas >= 18 && minas >= 25) {
+        if (horaas >= 15 && minas >= 30) {
             
             //Mensaje de solicitud de nombre para la lista de Agua Salud.
             bot.sendMessage(msg.from.id, "Has elegido la lista de *Agua Salud*.\nPor favor introduce tu nombre.", opts).then(function(sended) {
