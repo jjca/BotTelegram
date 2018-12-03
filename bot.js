@@ -573,7 +573,7 @@ bot.onText(/^\/hora$/, function(msg) {
     bot.sendMessage(msg.chat.id, `La hora es: *${getDateTime()}*`, { parse_mode: "Markdown" });
 });
 
-bot.onText(/^\/aviso$/, function(msg) {
+bot.onText(/^\/avisos$/, function(msg) {
     bot.sendMessage(msg.chat.id, Warning(), { parse_mode: "Markdown"});
 });
 
