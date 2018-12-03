@@ -37,11 +37,11 @@ const request = require("request");
 */
 
 
-//Mensajes Importantes
+//Mensajes Importantes de /avisos
 function Warning(){
 
-    const title = ":bangbang:Importante:bangbang:\n\n";
-    const W1 = "Se les recuerda a los estudiantes que no han pagado la colaboración para el aguinaldo del señor Juan, y se anotaron em la carpeta para colaborar, deben hacerlo.\n";
+    const title = "‼️‼️Importante‼️‼️\n\n";
+    const W1 = "Se les recuerda a los estudiantes del bus de *Catia* que no han pagado la colaboración para el aguinaldo del señor Juan, y se anotaron en la carpeta para colaborar, deben hacerlo.\n";
     const W2 = "El monto minimo para la colaboración es de 200 Bs.S\n\n";
     const NC = "*Número de Cuenta:* 0105-0024-98-1024227650.\n";
     const bank = "*Banco:* Mercantil.\n";
@@ -54,12 +54,13 @@ function Warning(){
 //Mensaje Principal
 function Welcome(){
 
-    const title = "‼️*Recuerda dos cosas:*‼️";
+    const title = "‼️*Recuerda tres cosas:*‼️";
     const W1 = "1️⃣ Leer las /reglas.";
-    const W2 = "2️⃣ Estar en el Amper a las *4:00 PM* para pasar la lista antes de que llegue el bus.";
+    const W2 = "2️⃣ Leer de vez en cuando los avisos con: /avisos.";
+    const W3 = "3️⃣ Estar en el Amper a las *4:00 PM* para pasar la lista antes de que llegue el bus.";
     const SO = "*Por favor selecciona una opción:*";
 
-    return `${title}\n\n${W1}\n\n${W2}\n\n${SO}`;
+    return `${title}\n\n${W1}\n\n${W2}\n\n${W3}\n\n{SO}`;
 }
 
 //Función de reglas.
@@ -102,10 +103,11 @@ function Commands() {
     const C2 = "/hora - Muestra la hora actual del servidor.";
     const C3 = "/verlistas - Muestra las listas (Catia/AvSucre) de forma detallada.";
     const C4 = "/reglas - Reglas para el uso apropiado del bot.";
-    const C5 = "/grupos - Enlaces de los grupos de Telegram, de Catia y Agua Salud.";
-    const C6 = "/faq - Preguntas frecuentes";
+    const C5 = "/avisos - Muestra avisos relevantes.";
+    const C6 = "/grupos - Enlaces de los grupos de Telegram, de Catia y Agua Salud.";
+    const C7 = "/faq - Preguntas frecuentes";
 
-    return `${title}\n\n${C1}\n${C2}\n${C3}\n${C4}\n${C5}\n${C6}`;
+    return `${title}\n\n${C1}\n${C2}\n${C3}\n${C4}\n${C5}\n${C6}\n${C7}`;
 }
 
 //Grupos
@@ -271,7 +273,7 @@ bot.on('message', function(msg) {
                     }
                     
                     //Mensaje de opciones.
-                    bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de *Catia*.", {
+                    bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de *Catia*." + Warning(), {
                         parse_mode: "Markdown",
                         reply_markup: {
                             keyboard: [
@@ -569,6 +571,10 @@ bot.onText(/^\/grupos$/, function(msg) {
 //Hora
 bot.onText(/^\/hora$/, function(msg) {
     bot.sendMessage(msg.chat.id, `La hora es: *${getDateTime()}*`, { parse_mode: "Markdown" });
+});
+
+bot.onText(/^\/aviso$/, function(msg) {
+    bot.sendMessage(msg.chat.id, Warning(), { parse_mode: "Markdown"});
 });
 
 
