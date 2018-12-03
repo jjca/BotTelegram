@@ -36,6 +36,21 @@ const request = require("request");
 --------------------------------------------------------------------------
 */
 
+
+//Mensajes Importantes
+function Warning(){
+
+    const title = ":bangbang:Importante:bangbang:\n\n";
+    const W1 = "Se les recuerda a los estudiantes que no han pagado la colaboración para el aguinaldo del señor Juan, y se anotaron em la carpeta para colaborar, deben hacerlo.\n";
+    const W2 = "El monto minimo para la colaboración es de 200 Bs.S\n\n";
+    const NC = "*Número de Cuenta:* 0105-0024-98-1024227650.\n";
+    const bank = "*Banco:* Mercantil.\n";
+    const name = "*Nombre:* Magaly Márquez - *CI:* 6.204.819\n";
+    const mail = "mcmarque@usb.ve";
+
+    return title + W1 + W2 + NC + bank + name + mail;
+}
+
 //Mensaje Principal
 function Welcome(){
 
