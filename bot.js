@@ -273,7 +273,7 @@ bot.on('message', function(msg) {
                     }
                     
                     //Mensaje de opciones.
-                    bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de *Catia*." + Warning(), {
+                    bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de *Catia*.\n\n" + Warning(), {
                         parse_mode: "Markdown",
                         reply_markup: {
                             keyboard: [
