@@ -41,14 +41,11 @@ const request = require("request");
 function Warning(){
 
     const title = "‼️‼️Importante‼️‼️\n\n";
-    const W1 = "Se les recuerda a los estudiantes del bus de *Catia* que no han pagado la colaboración para el aguinaldo del señor Juan, y se anotaron en la carpeta para colaborar, deben hacerlo.\n";
-    const W2 = "El monto minimo para la colaboración es de 200 Bs.S\n\n";
-    const NC = "*Número de Cuenta:* 0105-0024-98-1024227650.\n";
-    const bank = "*Banco:* Mercantil.\n";
-    const name = "*Nombre:* Magaly Márquez - *CI:* 6.204.819\n";
-    const mail = "mcmarque@usb.ve";
-
-    return title + W1 + W2 + NC + bank + name + mail;
+    const OP = "El orden de prioridad de la lista de la Av Sucre ha sido removida.\n";
+    const P1 = "Esto por petición de *Dirección de Transporte*";
+    const P2 = "Para más información hablar con @MaEscalanteHe";
+    
+    return title + OP + P1 + P2;
 }
 
 //Mensaje Principal
@@ -60,7 +57,7 @@ function Welcome(){
     const W3 = "3️⃣ Estar en el Amper a las *4:00 PM* para pasar la lista antes de que llegue el bus.";
     const SO = "*Por favor selecciona una opción:*";
 
-    return `${title}\n\n${W1}\n\n${W2}\n\n${W3}\n\n{SO}`;
+    return `${title}\n\n${W1}\n\n${W2}\n\n${W3}\n\n${SO}`;
 }
 
 //Función de reglas.
@@ -152,20 +149,20 @@ var opts = {
 //Arrays de listas básicas.
 var listacatia = [];
 var listaavsucre = [];
-var listaaguasalud = [];
-var listaelsilencio = [];
-var listalahoyada = [];
-var listabellasartes = [];
-var listaplazavenezuela = [];
+//var listaaguasalud = [];
+//var listaelsilencio = [];
+//var listalahoyada = [];
+//var listabellasartes = [];
+//var listaplazavenezuela = [];
 
 //Arrays de listas extendidas.
 var listacatia_ext = [];
 var listaavsucre_ext = [];
-var listaaguasalud_ext = [];
-var listaelsilencio_ext = [];
-var listalahoyada_ext = [];
-var listabellasartes_ext = [];
-var listaplazavenezuela_ext = [];
+//var listaaguasalud_ext = [];
+//var listaelsilencio_ext = [];
+//var listalahoyada_ext = [];
+//var listabellasartes_ext = [];
+//var listaplazavenezuela_ext = [];
 
 //ID's
 const Kevin_Lopez = "790564315";
@@ -236,7 +233,7 @@ bot.on('message', function(msg) {
         }
 
         //Ciclo para enviar la lista del array "listaavsucre".
-        listaavsucre = [...listaaguasalud, ...listaelsilencio, ...listalahoyada, ...listabellasartes, ...listaplazavenezuela];
+        //listaavsucre = [...listaaguasalud, ...listaelsilencio, ...listalahoyada, ...listabellasartes, ...listaplazavenezuela];
         let for_avsucre = "";
         for (i = 0; i < listaavsucre.length; i++) {
             for_avsucre += "*" + (i + 1) + ".-* " + listaavsucre[i] + "\n";
@@ -273,7 +270,7 @@ bot.on('message', function(msg) {
                     }
                     
                     //Mensaje de opciones.
-                    bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de *Catia*.\n\n" + Warning(), {
+                    bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de *Catia*.\n\n", {
                         parse_mode: "Markdown",
                         reply_markup: {
                             keyboard: [
@@ -293,6 +290,7 @@ bot.on('message', function(msg) {
         }
     }
 
+/*   
     const avsucre = "av sucre";
     if (msg.text.toString().toLowerCase().indexOf(avsucre) === 0) {
 
@@ -311,9 +309,10 @@ bot.on('message', function(msg) {
             }
         });
     }
+*/
 
-    const aguasalud = "agua salud";
-    if (msg.text.toString().toLowerCase().indexOf(aguasalud) === 0) {
+    const avsucre = "av sucre";
+    if (msg.text.toString().toLowerCase().indexOf(avsucre) === 0) {
         
         let fechaas = new Date();
         let horaas = fechaas.getHours();
@@ -321,21 +320,21 @@ bot.on('message', function(msg) {
         if (horaas >= 15 && minas >= 30) {
             
             //Mensaje de solicitud de nombre para la lista de Av Sucre.
-            bot.sendMessage(msg.from.id, "Has elegido la parada de *Agua Salud*.\nPor favor introduce tu nombre.", opts).then(function(sended) {
+            bot.sendMessage(msg.from.id, "Has elegido la lista de la *Av Sucre*.\nPor favor introduce tu nombre.", opts).then(function(sended) {
                 
                 //Escucha de solicitud del nombre.
                 bot.onReplyToMessage(sended.chat.id, sended.message_id, function(msg) {
                     
                     if(msg.chat.id == Javier_Medina){
         
-                        listaaguasalud.push(msg.text.toString() + " 👅 - (*" + getDateTime() + " - AS*).");
-                        listaaguasalud_ext.push(msg.text.toString() + " 👅 - (Fue anotado por: *" + msg.from.first_name + "* 👅 (_" + msg.from.id + "_) a las: *" + getDateTime() + "* - *Agua Salud*).");
+                        listaaguasalud.push(msg.text.toString() + " 👅 - (*" + getDateTime() + "*).");
+                        listaaguasalud_ext.push(msg.text.toString() + " 👅 - (Fue anotado por: *" + msg.from.first_name + "* 👅 (_" + msg.from.id + "_) a las: *" + getDateTime() + "*).");
                     
                     } else {
                         
-                        //Función que introduce el nombre introducido en el array de "listaaguasalud".                        
-                        listaaguasalud.push(msg.text.toString() + " - (*" + getDateTime() + " - AS*).");
-                        listaaguasalud_ext.push(msg.text.toString() + " - (Fue anotado por: *" + msg.from.first_name + "* (_" + msg.from.id + "_) a las: *" + getDateTime() + "* - *Agua Salud*).");
+                        //Función que introduce el nombre introducido en el array de "listaavsucre".                        
+                        listaaguasalud.push(msg.text.toString() + " - (*" + getDateTime() + "*).");
+                        listaaguasalud_ext.push(msg.text.toString() + " - (Fue anotado por: *" + msg.from.first_name + "* (_" + msg.from.id + "_) a las: *" + getDateTime() + "*).");
                     }
                     //Mensaje de opciones.
                     bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de *Agua Salud*.", {
@@ -358,6 +357,7 @@ bot.on('message', function(msg) {
         }
     }
 
+/*
     const elsilencio = "el silencio";
     if (msg.text.toString().toLowerCase().indexOf(elsilencio) === 0) {
         
@@ -528,6 +528,7 @@ bot.on('message', function(msg) {
         });
     }
 });
+*/
 
 bot.onText(/^\/verlistas$/, function(msg){
            
@@ -538,7 +539,7 @@ bot.onText(/^\/verlistas$/, function(msg){
     }
 
     //Ciclo para enviar la lista del array "listaavsucre".
-    listaavsucre_ext = [...listaaguasalud_ext, ...listaelsilencio_ext, ...listalahoyada_ext, ...listabellasartes_ext, ...listaplazavenezuela_ext];
+    //listaavsucre_ext = [...listaaguasalud_ext, ...listaelsilencio_ext, ...listalahoyada_ext, ...listabellasartes_ext, ...listaplazavenezuela_ext];
     let for_avsucre = "";
     for (i = 0; i < listaavsucre_ext.length; i++) {
         for_avsucre += "*" + (i + 1) + ".-* " + listaavsucre_ext[i] + "\n";
