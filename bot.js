@@ -743,6 +743,11 @@ bot.on("message", function(msg) {
         bot.sendVideoNote(chatId, "./files/flavio.mp4");
     }
 
+    const animo = "animo coño que es lunes";
+    if (msg.text.toString().toLowerCase().includes(animo)) {
+        bot.sendVideoNote(chatId, "./files/animocoñoqueeslunes.mp4");
+    }
+
 
 
     // Palabras prohibidas.
