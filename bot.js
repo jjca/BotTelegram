@@ -42,7 +42,7 @@ function Warning(){
 
     const title = "‼️‼️Importante‼️‼️\n\n";
     const OP = "El orden de prioridad de la lista de la Av Sucre ha sido removida.\n";
-    const P1 = "Esto por petición de *Dirección de Transporte*";
+    const P1 = "Esto por petición de *Dirección de Transporte*\n";
     const P2 = "Para más información hablar con @MaEscalanteHe";
     
     return title + OP + P1 + P2;
@@ -290,7 +290,7 @@ bot.on('message', function(msg) {
         }
     }
 
-/*   
+	/*   
     const avsucre = "av sucre";
     if (msg.text.toString().toLowerCase().indexOf(avsucre) === 0) {
 
@@ -309,7 +309,7 @@ bot.on('message', function(msg) {
             }
         });
     }
-*/
+	*/
 
     const avsucre = "av sucre";
     if (msg.text.toString().toLowerCase().indexOf(avsucre) === 0) {
@@ -327,17 +327,17 @@ bot.on('message', function(msg) {
                     
                     if(msg.chat.id == Javier_Medina){
         
-                        listaaguasalud.push(msg.text.toString() + " 👅 - (*" + getDateTime() + "*).");
-                        listaaguasalud_ext.push(msg.text.toString() + " 👅 - (Fue anotado por: *" + msg.from.first_name + "* 👅 (_" + msg.from.id + "_) a las: *" + getDateTime() + "*).");
+                        listaavsucre.push(msg.text.toString() + " 👅 - (*" + getDateTime() + "*).");
+                        listaavsucre_ext.push(msg.text.toString() + " 👅 - (Fue anotado por: *" + msg.from.first_name + "* 👅 (_" + msg.from.id + "_) a las: *" + getDateTime() + "*).");
                     
                     } else {
                         
                         //Función que introduce el nombre introducido en el array de "listaavsucre".                        
-                        listaaguasalud.push(msg.text.toString() + " - (*" + getDateTime() + "*).");
-                        listaaguasalud_ext.push(msg.text.toString() + " - (Fue anotado por: *" + msg.from.first_name + "* (_" + msg.from.id + "_) a las: *" + getDateTime() + "*).");
+                        listaavsucre.push(msg.text.toString() + " - (*" + getDateTime() + "*).");
+                        listaavsucre_ext.push(msg.text.toString() + " - (Fue anotado por: *" + msg.from.first_name + "* (_" + msg.from.id + "_) a las: *" + getDateTime() + "*).");
                     }
                     //Mensaje de opciones.
-                    bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de *Agua Salud*.", {
+                    bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de *Agua Salud*.\n" + Warning(), {
                         parse_mode: 'Markdown',
                         reply_markup: {
                             keyboard: [
@@ -357,7 +357,7 @@ bot.on('message', function(msg) {
         }
     }
 
-/*
+	/*
     const elsilencio = "el silencio";
     if (msg.text.toString().toLowerCase().indexOf(elsilencio) === 0) {
         
@@ -527,8 +527,10 @@ bot.on('message', function(msg) {
             }
         });
     }
+	*/
+
 });
-*/
+
 
 bot.onText(/^\/verlistas$/, function(msg){
            
