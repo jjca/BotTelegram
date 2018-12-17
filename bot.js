@@ -249,7 +249,7 @@ bot.on('message', function(msg) {
         let fechac = new Date();
         let horac = fechac.getHours();
         let minc = fechac.getMinutes();
-        if (horac >= 15 && minc >= 30) {
+        if (horac >= 11 && minc >= 30) {
             
             //Mensaje de solicitud de nombre para la lista de Catia.
             bot.sendMessage(msg.from.id, "Has elegido la lista de *Catia*.\nPor favor introduce tu nombre.", opts).then(function(sended) {
@@ -286,7 +286,7 @@ bot.on('message', function(msg) {
             });
         } else {
             
-            bot.sendMessage(msg.from.id, "Lo siento " + msg.from.first_name + ", debes esperar hasta las *3:30 PM* para poder anotarte.\n\nHora del servidor: *" + getDateTime() + "*.", { parse_mode: "Markdown" });
+            bot.sendMessage(msg.from.id, "Lo siento " + msg.from.first_name + ", debes esperar hasta las *11:30 PM* para poder anotarte.\n\nHora del servidor: *" + getDateTime() + "*.", { parse_mode: "Markdown" });
         }
     }
 
@@ -317,7 +317,7 @@ bot.on('message', function(msg) {
         let fechaas = new Date();
         let horaas = fechaas.getHours();
         let minas = fechaas.getMinutes();
-        if (horaas >= 15 && minas >= 30) {
+        if (horaas >= 11 && minas >= 30) {
             
             //Mensaje de solicitud de nombre para la lista de Av Sucre.
             bot.sendMessage(msg.from.id, "Has elegido la lista de la *Av Sucre*.\nPor favor introduce tu nombre.", opts).then(function(sended) {
@@ -353,7 +353,7 @@ bot.on('message', function(msg) {
             });
         } else {
       
-            bot.sendMessage(msg.from.id, "Lo siento " + msg.from.first_name + ", debes esperar hasta las *3:30 PM* para poder anotarte.\n\nHora del servidor: *" + getDateTime() + "*.", { parse_mode: "Markdown" });
+            bot.sendMessage(msg.from.id, "Lo siento " + msg.from.first_name + ", debes esperar hasta las *11:30 PM* para poder anotarte.\n\nHora del servidor: *" + getDateTime() + "*.", { parse_mode: "Markdown" });
         }
     }
 
@@ -741,11 +741,6 @@ bot.on("message", function(msg) {
     const flavio = "flavio";
     if (msg.text.toString().toLowerCase().includes(flavio)) {
         bot.sendVideoNote(chatId, "./files/flavio.mp4");
-    }
-
-    const animo = "animo coño que es lunes";
-    if (msg.text.toString().toLowerCase().includes(animo)) {
-        bot.sendVideoNote(chatId, "./files/animocoñoqueeslunes.mp4");
     }
 
 
