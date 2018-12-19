@@ -358,7 +358,7 @@ bot.on('message', function(msg) {
             });
         } else {
       
-            bot.sendMessage(msg.from.id, "Lo siento " + msg.from.first_name + ", debes esperar hasta las *11:30 PM* para poder anotarte.\n\nHora del servidor: *" + getDateTime() + "*.", { parse_mode: "Markdown" });
+            bot.sendMessage(msg.from.id, "Lo siento " + msg.from.first_name + `, debes esperar hasta las ${listaabrehora}:${listaabreminutos} para poder anotarte.\n\nHora del servidor: *` + getDateTime() + "*.", { parse_mode: "Markdown" });
         }
     }
 
