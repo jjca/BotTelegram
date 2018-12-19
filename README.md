@@ -1,7 +1,7 @@
 # BotTelegram
 
 [![Bot API](https://img.shields.io/badge/Bot%20API-v4.1-0088cc.svg)](https://core.telegram.org/bots/api)
-[![Node.js](https://img.shields.io/badge/Node.js-v8.13.0-6cc24a.svg)](https://nodejs.org/en/)
+[![Node.js](https://img.shields.io/badge/Node.js-v8.14.0-6cc24a.svg)](https://nodejs.org/en/)
 [![GitHub](https://img.shields.io/badge/GitHub-node--telegram--bot--api-333.svg)](https://github.com/yagop/node-telegram-bot-api)
 [![Twitter](https://img.shields.io/badge/Twitter-MaEscalanteHe-1da1f2.svg)](https://twitter.com/MaEscalanteHe)
 [![Telegram](https://img.shields.io/badge/Telegram-MaEscalanteHe-0088cc.svg)](https://telegram.me/MaEscalanteHe)
@@ -93,6 +93,7 @@ pm2 monit
 ```bash
 pm2 log
 ```
+
 ### Generación del script de startup
 
 Para configurar el script de startup del servidor se debe tener los procesos en marcha, arrancados mediante PM2, y ejecutar el siguiente comando:
@@ -100,7 +101,9 @@ Para configurar el script de startup del servidor se debe tener los procesos en 
 ```bash
 pm2 startup
 ```
-    
 
+## Colaboladores
 
-
+Manuel Escalante
+Manuel Rodriguez
+Javier Medina

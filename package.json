@@ -1,6 +1,6 @@
 {
   "name": "nalatbot",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Bot para telegram en nodejs",
   "main": "bot.js",
   "author": "Manuel Escalante",
@@ -9,6 +9,6 @@
     "node-telegram-bot-api": "^0.30.0"
   },
   "engines": {
-    "node": "8.13"
+    "node": "8.14"
   }
 }

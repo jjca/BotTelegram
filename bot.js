@@ -5,9 +5,7 @@ const TelegramBot = require("node-telegram-bot-api");
 const token = process.env.TELEGRAM_TOKEN;
 
 // El bot usa 'polling' para obtener actualizaciones.
-const bot = new TelegramBot(token, {
-  polling: true
-});
+const bot = new TelegramBot(token, { polling: true });
 const request = require("request");
 
 /*
@@ -38,91 +36,109 @@ const request = require("request");
 --------------------------------------------------------------------------
 */
 
+
+//Mensajes Importantes de /avisos
+function Warning(){
+
+    const title = "‼️‼️Importante‼️‼️\n\n";
+    const OP = "El orden de prioridad de la lista de la Av Sucre ha sido removida.\n";
+    const P1 = "Esto por petición de *Dirección de Transporte*\n";
+    const P2 = "Para más información hablar con @MaEscalanteHe";
+    
+    return title + OP + P1 + P2;
+}
+
 //Mensaje Principal
 function Welcome(){
 
-    var title = "‼️*Recuerda dos cosas:*‼️\n\n";
-    var W1 = "1️⃣ Leer las /reglas.\n\n";
-    var W2 = "2️⃣ Estar en el Amper a las *4:00 PM* para pasar la lista antes de que llegue el bus.\n\n";
-    var SO = "*Por favor selecciona una opción:*";
+    const title = "‼️*Recuerda tres cosas:*‼️";
+    const W1 = "1️⃣ Leer las /reglas.";
+    const W2 = "2️⃣ Leer de vez en cuando los avisos con: /avisos.";
+    const W3 = "3️⃣ Estar en el Amper a las *4:00 PM* para pasar la lista antes de que llegue el bus.";
+    const SO = "*Por favor selecciona una opción:*";
 
-    return title + W1 + W2 + SO;
-
+    return `${title}\n\n${W1}\n\n${W2}\n\n${W3}\n\n${SO}`;
 }
 
 //Función de reglas.
 function Rules() {
     
-    var title = "⚠️ *Reglas para el uso de las listas digitales Catia/Agua Salud* ⚠️\n\n";
-    var rule1 = "1️⃣ Al momento de anotarse en las listas colocar su *Nombre* y *Apellido*, de lo contrario será omitido a la hora de abordar el bus.\n\n";
-    var rule2 = "2️⃣ *Evitar* anotar a más de dos personas en un mismo dispositivo. En caso de hacerlo, de forma consecutiva, la tercera persona será omitida de la lista.\n\n";
-    var rule3 = "3️⃣ Recordar que el transporte es de empleados y los mismos tienen prioridad al momento de abordar el bus, por tanto si quedan empleados de pie los últimos de la lista deben ceder el puesto.";
-  
-    return title + rule1 + rule2 + rule3;
+    const title = "⚠️ *Reglas para el uso de las listas digitales Catia/AvSucre* ⚠️";
+    const rule1 = "1️⃣ Al momento de anotarse en las listas colocar su *Nombre* y *Apellido*, de lo contrario será omitido a la hora de abordar el bus.";
+    const rule2 = "2️⃣ *Evitar* anotar a más de dos personas en un mismo dispositivo. En caso de hacerlo, de forma consecutiva, la tercera persona será omitida de la lista.";
+    const rule3 = "3️⃣ Recordar que el transporte es de empleados y los mismos tienen prioridad al momento de abordar el bus, por tanto si quedan empleados de pie los últimos de la lista deben ceder el puesto.";
+    const rule4 = "4️⃣ ...";
+
+    return `${title}\n\n${rule1}\n\n${rule2}\n\n${rule3}\n\n${rule4}`;
+}
+
+//Time
+function Time() {
+
+    const msg = "La hora actual del servidor es:";
+
+    return `${msg} *${getDateTime()}*`;
 }
 
 //FAQ
 function Faq() {
 
-    var title = "📊 *Preguntas Frecuentes* 📊\n\n";
-    var Q1 = "*¿Quienes son los administradores del bot?*\n";
-    var A1 = "▫️_Manuel Escalante_ (@MaEscalanteHe).\n▪_Manuel Rodriguez_ (@ManuelitoD).\n▪_Javier Medina_ (@JBadBunny).\n\n";
-    var Q2 = "";
-    var A2 = "";
+    const title = "📊 *Preguntas Frecuentes* 📊";
+    const Q1 = "*¿Quienes son los administradores del bot?*";
+    const A1 = "▫️_Manuel Escalante_ (@MaEscalanteHe).\n▪_Manuel Rodriguez_ (@ManuelitoD).\n▪_Javier Medina_ (@JBadBunny).";
+    const Q2 = "*¿Cómo puedo ver el código del bot?*";
+    const A2 = "_Usando el comando_ /repositorio.";
 
-    return title + Q1 + A1;
+    return `${title}\n\n${Q1}\n${A1}\n\n${Q2}\n${A2}`;
 }
 
 //Comandos
 function Commands() {
 
-    var title = "⌨️ *Comandos Disponlibles* ⌨️\n\n";
-    var C1 = "/start - Inicia la funcionalidad principal del bot.\n";
-    var C2 = "/reglas - Reglas para el uso apropiado del bot.\n";
-    var C3 = "/grupos - Enlaces de los grupos de Telegram, de Catia y Agua Salud.\n";
-    var C4 = "/faq - Preguntas frecuentes\n";
+    const title = "⌨️ *Comandos Disponlibles* ⌨️";
+    const C1 = "/start - Inicia la funcionalidad principal del bot.";
+    const C2 = "/hora - Muestra la hora actual del servidor.";
+    const C3 = "/verlistas - Muestra las listas (Catia/AvSucre) de forma detallada.";
+    const C4 = "/reglas - Reglas para el uso apropiado del bot.";
+    const C5 = "/avisos - Muestra avisos relevantes.";
+    const C6 = "/grupos - Enlaces de los grupos de Telegram, de Catia y Agua Salud.";
+    const C7 = "/faq - Preguntas frecuentes";
 
-    return title + C1 + C2 + C3 + C4;
+    return `${title}\n\n${C1}\n${C2}\n${C3}\n${C4}\n${C5}\n${C6}\n${C7}`;
 }
 
 //Grupos
 function Groups() {
 
-    var title = "⌨️ *Grupos de Telegram* ⌨️\n\n";
-    var GC = "*Grupo de Catia:*\n⚠️ Unirse bajo su propio riesgo, puro desmadre ⚠️.\n";
-    var LC = "[Los Bendecidos de Catia](https://t.me/LosBendecidosdeCatia)\n\n";
-    var GAS = "*Grupo de Agua Salud:*\n";
-    var LAS = "[AvSucre](https://t.me/AvSucre)";
+    const title = "⌨️ *Grupos de Telegram* ⌨️";
+    const GC = "*Grupo de Catia:*\n⚠️ Unirse bajo su propio riesgo, puro desmadre ⚠️.";
+    const LC = "[Los Bendecidos de Catia](https://t.me/LosBendecidosdeCatia)";
+    const GAS = "*Grupo de Av Sucre:*";
+    const LAS = "[AvSucre](https://t.me/AvSucre)";
     
-    return title + GC + LC + GAS + LAS;
+    return `${title}\n\n${GC}\n${LC}\n\n${GAS}\n${LAS}`;
 }
 
 //Función de tiempo
 function getDateTime() {
     
-    var date = new Date();
-  
-    var hour = date.getHours();
-    hour = (hour < 10 ? "0" : "") + hour;
-  
-    var min = date.getMinutes();
-    min = (min < 10 ? "0" : "") + min;
-  
-    var sec = date.getSeconds();
-    sec = (sec < 10 ? "0" : "") + sec;
-  
-    var year = date.getFullYear();
-  
-    var month = date.getMonth() + 1;
-    month = (month < 10 ? "0" : "") + month;
-  
-    var day = date.getDate();
+    let date = new Date();
+    let year = date.getFullYear(); 
+    let month = date.getMonth() + 1;
+    month = (month < 10 ? "0" : "") + month;  
+    let day = date.getDate();
     day = (day < 10 ? "0" : "") + day;
+    let hour = date.getHours();
+    hour = (hour < 10 ? "0" : "") + hour;  
+    let min = date.getMinutes();
+    min = (min < 10 ? "0" : "") + min;  
+    let sec = date.getSeconds();
+    sec = (sec < 10 ? "0" : "") + sec;           
   
-    return hour + ":" + min + ":" + sec;
+    return `${hour}:${min}:${sec}`;
 }
 
-//Habilita la opcion de responder mensaje por defecto.
+//Objeto que habilita la opcion de responder mensaje por defecto.
 var opts = {
     parse_mode: "Markdown",
     reply_markup: JSON.stringify({
@@ -132,22 +148,28 @@ var opts = {
 
 //Arrays de listas básicas.
 var listacatia = [];
-var listaaguasalud = [];
+var listaavsucre = [];
+//var listaaguasalud = [];
+//var listaelsilencio = [];
+//var listalahoyada = [];
+//var listabellasartes = [];
+//var listaplazavenezuela = [];
 
 //Arrays de listas extendidas.
 var listacatia_ext = [];
-var listaaguasalud_ext = [];
-
-//Arrays de copias de seguridad de las listas.
-var lccopia = [];
-var lascopia = [];
+var listaavsucre_ext = [];
+//var listaaguasalud_ext = [];
+//var listaelsilencio_ext = [];
+//var listalahoyada_ext = [];
+//var listabellasartes_ext = [];
+//var listaplazavenezuela_ext = [];
 
 //ID's
-var Kevin_Lopez = "790564315";
-var Javier_Medina = "5675284";
+const Kevin_Lopez = "790564315";
+const Javier_Medina = "5675284";
 
 //Comando /start que inicia la funcionalidad principal del bot.
-bot.onText(/^\/start/, function(msg) {    
+bot.onText(/^\/start$/, function(msg) {    
     
     bot.getChatMember(msg.chat.id, msg.from.id).then(function(user) {        
         
@@ -155,12 +177,12 @@ bot.onText(/^\/start/, function(msg) {
         if (msg.chat.type == "private") {            
             
             //Mensaje de opciones en formato de teclado.
-            bot.sendMessage(msg.chat.id, "✨ *¡Hola " + msg.from.first_name + "!* ✨\n\n" + Welcome(), {
+            bot.sendMessage(msg.chat.id,  "✨ *¡Hola " + msg.from.first_name + "!* ✨\n\n" + Welcome(), {
                 parse_mode: "Markdown",
                 reply_markup: {
                     keyboard: [
-                        ["Reglas ⚠️"],
-                        ["Catia 📝", "Agua Salud 📝"],
+                        ["Reglas ⚠️", "Hora 🕞"],
+                        ["Catia 📝", "Av Sucre 📝"],
                         ["Ver listas 👁"]
                     ],
                     resize_keyboard: true,
@@ -176,8 +198,8 @@ bot.onText(/^\/start/, function(msg) {
                 parse_mode: "Markdown",
                 reply_markup: {
                     keyboard: [
-                        ["Reglas ⚠️"],
-                        ["Catia 📝", "Agua Salud 📝"],
+                        ["Reglas ⚠️", "Hora 🕞"],
+                        ["Catia 📝", "Av Sucre 📝"],
                         ["Ver listas 👁"]
                     ],
                     resize_keyboard: true,
@@ -189,39 +211,45 @@ bot.onText(/^\/start/, function(msg) {
 });
 
 //Función de lectura de mensajes.
-bot.on("message", function(msg) {
+bot.on('message', function(msg) {
     
-    var reglas = "reglas";
+    const reglas = "reglas";
     if (msg.text.toString().toLowerCase().indexOf(reglas) === 0) {
         bot.sendMessage(msg.chat.id, Rules(), { parse_mode: "Markdown" });
     }
 
-    var verlista = "ver lista";
+    const hora = "hora";
+    if (msg.text.toString().toLowerCase().indexOf(hora) === 0) {
+        bot.sendMessage(msg.chat.id, Time(), { parse_mode: "Markdown" });
+    }
+    
+    const verlista = "ver lista";
     if (msg.text.toString().toLowerCase().indexOf(verlista) === 0) {
         
         //Ciclo para enviar la lista del array "listacatia".
-        var for_catia = "";
+        let for_catia = "";
         for (i = 0; i < listacatia.length; i++) {
             for_catia += "*" + (i + 1) + ".-* " + listacatia[i] + "\n";
         }
 
-        //Ciclo para enviar la lista del array "listaaguasalud".
-        var for_aguasalud = "";
-        for (i = 0; i < listaaguasalud.length; i++) {
-            for_aguasalud += "*" + (i + 1) + ".-* " + listaaguasalud[i] + "\n";
+        //Ciclo para enviar la lista del array "listaavsucre".
+        //listaavsucre = [...listaaguasalud, ...listaelsilencio, ...listalahoyada, ...listabellasartes, ...listaplazavenezuela];
+        let for_avsucre = "";
+        for (i = 0; i < listaavsucre.length; i++) {
+            for_avsucre += "*" + (i + 1) + ".-* " + listaavsucre[i] + "\n";
         }
 
         //Mensaje que se envia una vez se hayan ordenado los objetos de los arrays.
-        bot.sendMessage(msg.chat.id, "*Lista Catia:*\n" + for_catia + "\n*Lista Agua Salud:*\n" + for_aguasalud, { parse_mode: "Markdown" });
+        bot.sendMessage(msg.chat.id, "*Lista Catia:*\n" + for_catia + "\n*Lista Av Sucre:*\n" + for_avsucre, { parse_mode: "Markdown" });
     }
 
-    var catia = "catia";
+    const catia = "catia";
     if (msg.text.toString().toLowerCase().indexOf(catia) === 0) {
         
-        var fechac = new Date();
-        var horac = fechac.getHours();
-        var minc = fechac.getMinutes();
-        if (horac >= 15 && minc >= 30) {
+        let fechac = new Date();
+        let horac = fechac.getHours();
+        let minc = fechac.getMinutes();
+        if (horac >= 13 && minc >= 30) {
             
             //Mensaje de solicitud de nombre para la lista de Catia.
             bot.sendMessage(msg.from.id, "Has elegido la lista de *Catia*.\nPor favor introduce tu nombre.", opts).then(function(sended) {
@@ -231,8 +259,8 @@ bot.on("message", function(msg) {
                 
                     if (msg.chat.id == Kevin_Lopez) {
                                                 
-                        listacatia.push(msg.text.toString() + " ❤❤ - (*" + getDateTime() + "*).");
-                        listacatia_ext.push(msg.text.toString() + " ❤❤ - (Fue anotado por: *" + msg.from.first_name + "* ❤❤ (_" + msg.from.id + "_) a las: *" + getDateTime() + "*).");
+                        listacatia.push(msg.text.toString() + " ❤❤❤ - (*" + getDateTime() + "*).");
+                        listacatia_ext.push(msg.text.toString() + " ❤❤❤ - (Fue anotado por: *" + msg.from.first_name + "* ❤❤ (_" + msg.from.id + "_) a las: *" + getDateTime() + "*).");
                     } else {
                         
                         //Función que introduce el nombre introducido en el array de "listacatia".
@@ -242,12 +270,12 @@ bot.on("message", function(msg) {
                     }
                     
                     //Mensaje de opciones.
-                    bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de *Catia*.", {
+                    bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de *Catia*.\n\n", {
                         parse_mode: "Markdown",
                         reply_markup: {
                             keyboard: [
-                                ["Reglas ⚠️"],
-                                ["Catia 📝", "Agua Salud 📝"],
+                                ["Reglas ⚠️", "Hora 🕞"],
+                                ["Catia 📝", "Av Sucre 📝"],
                                 ["Ver listas 👁"]
                             ],
                             resize_keyboard: true,
@@ -258,41 +286,63 @@ bot.on("message", function(msg) {
             });
         } else {
             
-            bot.sendMessage(msg.from.id, "Lo siento " + msg.from.first_name + ", debes esperar hasta las *3:30 PM* para poder anotarte.", { parse_mode: "Markdown" });
+            bot.sendMessage(msg.from.id, "Lo siento " + msg.from.first_name + ", debes esperar hasta las *11:30 PM* para poder anotarte.\n\nHora del servidor: *" + getDateTime() + "*.", { parse_mode: "Markdown" });
         }
     }
 
-    var aguasalud = "agua salud";
-    if (msg.text.toString().toLowerCase().indexOf(aguasalud) === 0) {
+	/*   
+    const avsucre = "av sucre";
+    if (msg.text.toString().toLowerCase().indexOf(avsucre) === 0) {
+
+        //Mensaje de solicitud de parada.
+        bot.sendMessage(msg.from.id, "Has elegido la lista de la *Av Sucre*.\nPor favor introduce la parada donde te vas a bajar.", {
+            parse_mode: 'Markdown',
+            reply_markup: {
+                keyboard: [
+                    ["Agua Salud 📝"],
+                    ["El Silencio 📝", "La Hoyada 📝"],
+                    ["Bellas Artes 📝", "Plaza Venezuela 📝"],
+                    ["Volver atrás ◀️"]
+                ],
+                resize_keyboard: true,
+                one_time_keyboard: false
+            }
+        });
+    }
+	*/
+
+    const avsucre = "av sucre";
+    if (msg.text.toString().toLowerCase().indexOf(avsucre) === 0) {
         
-        var fechaas = new Date();
-        var horaas = fechaas.getHours();
-        var minas = fechaas.getMinutes();
-        if (horaas >= 15 && minas >= 30) {
+        let fechaas = new Date();
+        let horaas = fechaas.getHours();
+        let minas = fechaas.getMinutes();
+        if (horaas >= 13 && minas >= 30) {
             
-            //Mensaje de solicitud de nombre para la lista de Agua Salud.
-            bot.sendMessage(msg.from.id, "Has elegido la lista de *Agua Salud*.\nPor favor introduce tu nombre.", opts).then(function(sended) {
+            //Mensaje de solicitud de nombre para la lista de Av Sucre.
+            bot.sendMessage(msg.from.id, "Has elegido la lista de la *Av Sucre*.\nPor favor introduce tu nombre.", opts).then(function(sended) {
                 
                 //Escucha de solicitud del nombre.
                 bot.onReplyToMessage(sended.chat.id, sended.message_id, function(msg) {
                     
                     if(msg.chat.id == Javier_Medina){
         
-                        listaaguasalud.push(msg.text.toString() + " 👅 - (*" + getDateTime() + "*).");
-                        listaaguasalud_ext.push(msg.text.toString() + " 👅 - (Fue anotado por: *" + msg.from.first_name + "* 👅 (_" + msg.from.id + "_) a las: *" + getDateTime() + "*).");
+                        listaavsucre.push(msg.text.toString() + " 👅 - (*" + getDateTime() + "*).");
+                        listaavsucre_ext.push(msg.text.toString() + " 👅 - (Fue anotado por: *" + msg.from.first_name + "* 👅 (_" + msg.from.id + "_) a las: *" + getDateTime() + "*).");
                     
-                    } else {//Función que introduce el nombre introducido en el array de "listaaguasalud".
+                    } else {
                         
-                        listaaguasalud.push(msg.text.toString() + " - (*" + getDateTime() + "*).");
-                        listaaguasalud_ext.push(msg.text.toString() + " - (Fue anotado por: *" + msg.from.first_name + "* (_" + msg.from.id + "_) a las: *" + getDateTime() + "*).");
+                        //Función que introduce el nombre introducido en el array de "listaavsucre".                        
+                        listaavsucre.push(msg.text.toString() + " - (*" + getDateTime() + "*).");
+                        listaavsucre_ext.push(msg.text.toString() + " - (Fue anotado por: *" + msg.from.first_name + "* (_" + msg.from.id + "_) a las: *" + getDateTime() + "*).");
                     }
                     //Mensaje de opciones.
-                    bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de *Agua Salud*.", {
+                    bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de *Agua Salud*.\n" + Warning(), {
                         parse_mode: 'Markdown',
                         reply_markup: {
                             keyboard: [
-                                ["Reglas ⚠️"],
-                                ["Catia 📝", "Agua Salud 📝"],
+                                ["Reglas ⚠️", "Hora 🕞"],
+                                ["Catia 📝", "Av Sucre 📝"],
                                 ["Ver listas 👁"]
                             ],
                             resize_keyboard: true,
@@ -303,48 +353,235 @@ bot.on("message", function(msg) {
             });
         } else {
       
-            bot.sendMessage(msg.from.id, "Lo siento " + msg.from.first_name + ", debes esperar hasta las *3:30 PM* para poder anotarte.", { parse_mode: "Markdown" });
+            bot.sendMessage(msg.from.id, "Lo siento " + msg.from.first_name + ", debes esperar hasta las *11:30 PM* para poder anotarte.\n\nHora del servidor: *" + getDateTime() + "*.", { parse_mode: "Markdown" });
         }
     }
+
+	/*
+    const elsilencio = "el silencio";
+    if (msg.text.toString().toLowerCase().indexOf(elsilencio) === 0) {
+        
+        let fechaes = new Date();
+        let horaes = fechaes.getHours();
+        let mines = fechaes.getMinutes();
+        if (horaes >= 15 && mines >= 30) {
+            
+            //Mensaje de solicitud de nombre para la lista de Av Sucre.
+            bot.sendMessage(msg.from.id, "Has elegido la parada de *El Silencio*.\nPor favor introduce tu nombre.", opts).then(function(sended) {
+                
+                //Escucha de solicitud del nombre.
+                bot.onReplyToMessage(sended.chat.id, sended.message_id, function(msg) {               
+                            
+                    listaelsilencio.push(msg.text.toString() + " - (*" + getDateTime() + " - ES*).");
+                    listaelsilencio_ext.push(msg.text.toString() + " - (Fue anotado por: *" + msg.from.first_name + "* (_" + msg.from.id + "_) a las: *" + getDateTime() + "* - *El Silencio*).");
+                    
+                    //Mensaje de opciones.
+                    bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de *Agua Salud*.", {
+                        parse_mode: 'Markdown',
+                        reply_markup: {
+                            keyboard: [
+                                ["Reglas ⚠️", "Hora 🕞"],
+                                ["Catia 📝", "Av Sucre 📝"],
+                                ["Ver listas 👁"]
+                            ],
+                            resize_keyboard: true,
+                            one_time_keyboard: false
+                        }
+                    });
+                });
+            });
+        } else {
+      
+            bot.sendMessage(msg.from.id, "Lo siento " + msg.from.first_name + ", debes esperar hasta las *3:30 PM* para poder anotarte.\n\nHora del servidor: *" + getDateTime() + "*.", { parse_mode: "Markdown" });
+        }
+    }
+
+    const lahoyada = "la hoyada";
+    if (msg.text.toString().toLowerCase().indexOf(lahoyada) === 0) {
+        
+        let fechalh = new Date();
+        let horalh = fechalh.getHours();
+        let minlh = fechalh.getMinutes();
+        if (horalh >= 15 && minlh >= 30) {
+            
+            //Mensaje de solicitud de nombre para la lista de Av Sucre.
+            bot.sendMessage(msg.from.id, "Has elegido la parada de *La Hoyada*.\nPor favor introduce tu nombre.", opts).then(function(sended) {
+                
+                //Escucha de solicitud del nombre.
+                bot.onReplyToMessage(sended.chat.id, sended.message_id, function(msg) {               
+                            
+                    listalahoyada.push(msg.text.toString() + " - (*" + getDateTime() + " - LH*).");
+                    listalahoyada_ext.push(msg.text.toString() + " - (Fue anotado por: *" + msg.from.first_name + "* (_" + msg.from.id + "_) a las: *" + getDateTime() + "* - *La Hoyada*).");
+                    
+                    //Mensaje de opciones.
+                    bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de *Agua Salud*.", {
+                        parse_mode: 'Markdown',
+                        reply_markup: {
+                            keyboard: [
+                                ["Reglas ⚠️", "Hora 🕞"],
+                                ["Catia 📝", "Av Sucre 📝"],
+                                ["Ver listas 👁"]
+                            ],
+                            resize_keyboard: true,
+                            one_time_keyboard: false
+                        }
+                    });
+                });
+            });
+        } else {
+      
+            bot.sendMessage(msg.from.id, "Lo siento " + msg.from.first_name + ", debes esperar hasta las *3:30 PM* para poder anotarte.\n\nHora del servidor: *" + getDateTime() + "*.", { parse_mode: "Markdown" });
+        }
+    }
+
+    const bellasartes = "bellas artes";
+    if (msg.text.toString().toLowerCase().indexOf(bellasartes) === 0) {
+        
+        let fechaba = new Date();
+        let horaba = fechaba.getHours();
+        let minba = fechaba.getMinutes();
+        if (horaba >= 15 && minba >= 30) {
+            
+            //Mensaje de solicitud de nombre para la lista de Av Sucre.
+            bot.sendMessage(msg.from.id, "Has elegido la parada de *Bellas Artes*.\nPor favor introduce tu nombre.", opts).then(function(sended) {
+                
+                //Escucha de solicitud del nombre.
+                bot.onReplyToMessage(sended.chat.id, sended.message_id, function(msg) {               
+                            
+                    listabellasartes.push(msg.text.toString() + " - (*" + getDateTime() + " - BA*).");
+                    listabellasartes_ext.push(msg.text.toString() + " - (Fue anotado por: *" + msg.from.first_name + "* (_" + msg.from.id + "_) a las: *" + getDateTime() + "* - *Bellas Artes*).");
+                    
+                    //Mensaje de opciones.
+                    bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de *Agua Salud*.", {
+                        parse_mode: 'Markdown',
+                        reply_markup: {
+                            keyboard: [
+                                ["Reglas ⚠️", "Hora 🕞"],
+                                ["Catia 📝", "Av Sucre 📝"],
+                                ["Ver listas 👁"]
+                            ],
+                            resize_keyboard: true,
+                            one_time_keyboard: false
+                        }
+                    });
+                });
+            });
+        } else {
+      
+            bot.sendMessage(msg.from.id, "Lo siento " + msg.from.first_name + ", debes esperar hasta las *3:30 PM* para poder anotarte.\n\nHora del servidor: *" + getDateTime() + "*.", { parse_mode: "Markdown" });
+        }
+    }
+
+    const plazavenezuela = "plaza venezuela";
+    if (msg.text.toString().toLowerCase().indexOf(plazavenezuela) === 0) {
+        
+        let fechapv = new Date();
+        let horapv = fechapv.getHours();
+        let minpv = fechapv.getMinutes();
+        if (horapv >= 15 && minpv >= 30) {
+            
+            //Mensaje de solicitud de nombre para la lista de Av Sucre.
+            bot.sendMessage(msg.from.id, "Has elegido la parada de *Plaza Venezuela*.\nPor favor introduce tu nombre.", opts).then(function(sended) {
+                
+                //Escucha de solicitud del nombre.
+                bot.onReplyToMessage(sended.chat.id, sended.message_id, function(msg) {               
+                            
+                    listaplazavenezuela.push(msg.text.toString() + " - (*" + getDateTime() + " - PV*).");
+                    listaplazavenezuela_ext.push(msg.text.toString() + " - (Fue anotado por: *" + msg.from.first_name + "* (_" + msg.from.id + "_) a las: *" + getDateTime() + "* - *Plaza Venezuela*).");
+                    
+                    //Mensaje de opciones.
+                    bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de *Agua Salud*.", {
+                        parse_mode: 'Markdown',
+                        reply_markup: {
+                            keyboard: [
+                                ["Reglas ⚠️", "Hora 🕞"],
+                                ["Catia 📝", "Av Sucre 📝"],
+                                ["Ver listas 👁"]
+                            ],
+                            resize_keyboard: true,
+                            one_time_keyboard: false
+                        }
+                    });
+                });
+            });
+        } else {
+      
+            bot.sendMessage(msg.from.id, "Lo siento " + msg.from.first_name + ", debes esperar hasta las *3:30 PM* para poder anotarte.\n\nHora del servidor: *" + getDateTime() + "*.", { parse_mode: "Markdown" });
+        }
+    }
+
+    const volver = "volver atrás";
+    if (msg.text.toString().toLowerCase().indexOf(volver) === 0) {
+
+        //Mensaje predeterminado.
+        bot.sendMessage(msg.from.id, "*Por favor selecciona una opción:*", {
+            parse_mode: 'Markdown',
+            reply_markup: {
+                keyboard: [
+                    ["Reglas ⚠️", "Hora 🕞"],
+                    ["Catia 📝", "Av Sucre 📝"],
+                    ["Ver listas 👁"]
+                ],
+                resize_keyboard: true,
+                one_time_keyboard: false
+            }
+        });
+    }
+	*/
+
 });
 
-bot.onText(/^\/verlista/, function(msg){
+
+bot.onText(/^\/verlistas$/, function(msg){
            
     //Ciclo para enviar la lista del array "listacatia".
-    var for_catia = "";
+    let for_catia = "";
     for (i = 0; i < listacatia_ext.length; i++) {
         for_catia += "*" + (i + 1) + ".-* " + listacatia_ext[i] + "\n";
     }
 
-    //Ciclo para enviar la lista del array "listaaguasalud".
-    var for_aguasalud = "";
-    for (i = 0; i < listaaguasalud_ext.length; i++) {
-        for_aguasalud += "*" + (i + 1) + ".-* " + listaaguasalud_ext[i] + "\n";
+    //Ciclo para enviar la lista del array "listaavsucre".
+    //listaavsucre_ext = [...listaaguasalud_ext, ...listaelsilencio_ext, ...listalahoyada_ext, ...listabellasartes_ext, ...listaplazavenezuela_ext];
+    let for_avsucre = "";
+    for (i = 0; i < listaavsucre_ext.length; i++) {
+        for_avsucre += "*" + (i + 1) + ".-* " + listaavsucre_ext[i] + "\n";
     }
 
     //Mensaje que se envia una vez se hayan ordenado los objetos de los arrays.
-    bot.sendMessage(msg.chat.id, "*Lista Catia:*\n" + for_catia + "\n*Lista Agua Salud:*\n" + for_aguasalud, { parse_mode: "Markdown" });
+    bot.sendMessage(msg.chat.id, "*Lista Catia:*\n" + for_catia + "\n*Lista Agua Salud:*\n" + for_avsucre, { parse_mode: "Markdown" });
 });
 
 //FAQ
-bot.onText(/^\/faq/, function(msg) {
+bot.onText(/^\/faq$/, function(msg) {
     bot.sendMessage(msg.chat.id, Faq(), { parse_mode: "Markdown" });
 });
   
 //Reglas
-bot.onText(/^\/reglas/, function(msg) {
+bot.onText(/^\/reglas$/, function(msg) {
     bot.sendMessage(msg.chat.id, Rules(), { parse_mode: "Markdown" });
 });
 
 //Comandos
-bot.onText(/^\/comandos/, function(msg) {
+bot.onText(/^\/comandos$/, function(msg) {
     bot.sendMessage(msg.chat.id, Commands(), { parse_mode: "Markdown" });
 });
 
 //Grupos
-bot.onText(/^\/grupos/, function(msg) {
+bot.onText(/^\/grupos$/, function(msg) {
     bot.sendMessage(msg.chat.id, Groups(), { disable_web_page_preview: true, parse_mode: "Markdown" });
 });
+
+//Hora
+bot.onText(/^\/hora$/, function(msg) {
+    bot.sendMessage(msg.chat.id, `La hora es: *${getDateTime()}*`, { parse_mode: "Markdown" });
+});
+
+bot.onText(/^\/avisos$/, function(msg) {
+    bot.sendMessage(msg.chat.id, Warning(), { parse_mode: "Markdown"});
+});
+
+
+
 
 
 /*
@@ -372,147 +609,146 @@ bot.on("message", function(msg) {
 
     
     //Mensajes.
-    var cdlm = "coño de la madre";
+    const cdlm = "coño de la madre";
     if (msg.text.toString().toLowerCase().includes(cdlm)) {
         bot.sendMessage(chatId, fromName + ", Maduro te ama.");
     }
 
-    var mmgv = ["mamaguevo", "mamaguebo", "mamahuevo"];
+    const mmgv = ["mamaguevo", "mamaguebo", "mamahuevo"];
     if (msg.text.toString().toLowerCase().includes(mmgv[0]) || msg.text.toString().toLowerCase().includes(mmgv[1]) || msg.text.toString().toLowerCase().includes(mmgv[2])) {
         bot.sendMessage(chatId, fromName + ", ¡NIÑ@!, ¿Con esa boca besas a tú mamá?");
     }
 
-    var digalo = ["digalo ahí nalat", "digalo ahi nalat", "dígalo ahí nalat", "dígalo ahi nalat"];
+    const digalo = ["digalo ahí nalat", "digalo ahi nalat", "dígalo ahí nalat", "dígalo ahi nalat"];
     if (msg.text.toString().toLowerCase().indexOf(digalo[0]) === 0 || msg.text.toString().toLowerCase().indexOf(digalo[1]) === 0 || msg.text.toString().toLowerCase().indexOf(digalo[2]) === 0 || msg.text.toString().toLowerCase().indexOf(digalo[3]) === 0) {
         bot.sendMessage(chatId, "Sisa manauresaurio.");
     }
 
-    var shutup = ["callate menor", "cállate menor"];
+    const shutup = ["callate menor", "cállate menor"];
     if (msg.text.toString().toLowerCase().includes(shutup[0]) || msg.text.toString().toLowerCase().includes(shutup[1])) {
         bot.sendMessage(chatId, "Cállate tu, viejo lesbiano.");
     }
 
-    var goy = ["nalat, ¿gregory es marico?", "nalat, ¿manuel es marico?", "nalat, ¿lester es marico?"];
+    const goy = ["nalat, ¿gregory es marico?", "nalat, ¿manuel es marico?", "nalat, ¿lester es marico?"];
     if (msg.text.toString().toLowerCase().indexOf(goy[0]) === 0 || msg.text.toString().toLowerCase().indexOf(goy[1]) === 0 || msg.text.toString().toLowerCase().indexOf(goy[2]) === 0) {
         bot.sendMessage(chatId, "Sí, es tremendo goy");
     }
 
-    var ego = ["nalat, ¿qué opinas de mi?", "nalat, ¿que opinas de mi?"];
+    const ego = ["nalat, ¿qué opinas de mi?", "nalat, ¿que opinas de mi?"];
     if (msg.text.toString().toLowerCase().indexOf(ego[0]) === 0 || msg.text.toString().toLowerCase().indexOf(ego[1]) === 0) {
         bot.sendMessage(chatId, "Que eres burda de bell@.");
     }
 
-    var mierda = "puto bot de mierda";
-    if (msg.text.toString().toLowerCase().indexOf(mierda) === 0) {
+    const mierda = "puto bot de mierda";
+    if (msg.text.toString().toLowerCase().includes(mierda)) {
         bot.sendMessage(chatId, fromName + " epa epa, ¿pendiente de un tiro becerr@?");
     }
 
-    var kevin = ["nalat, ¿que opinas de kevin?", "nalat, ¿qué opinas de kevin?"];
+    const kevin = ["nalat, ¿que opinas de kevin?", "nalat, ¿qué opinas de kevin?"];
     if (msg.text.toString().toLowerCase().indexOf(kevin[0]) === 0 || msg.text.toString().toLowerCase().indexOf(kevin[1]) === 0) {
         bot.sendMessage(chatId, "❤✨❤ Que es burda de bello. ❤✨❤");
     }
 
-    var dolares = "quiero dolares";
+    const dolares = "quiero dolares";
     if (msg.text.toString().toLowerCase().includes(dolares)) {
         bot.sendMessage(chatId, fromName + " yo también quiero dolares.");
     }
 
-    var bdv = "nalat es un bot";
+    const bdv = "nalat es un bot";
     if (msg.text.toString().toLowerCase().includes(bdv)) {
         bot.sendMessage(chatId, "¡Mentira!, yo soy un niño de verdad.");
     }
 
-    var corte18 = "corte 18";
+    const corte18 = "corte 18";
     if (msg.text.toString().toLowerCase().includes(corte18)) {
         bot.sendMessage(chatId, "Sí alguien vuelve a decir 'Corte 18' le meto un tiro.");
     }
 
-    var med = "me dolió";
+    const med = "me dolió";
     if (msg.text.toString().toLowerCase().includes(med)) {
         bot.sendMessage(chatId, "Ponte una curita pues, gafo.");
     }
 
-    var parcela = ["qué es una parcela", "que es una parcela"];
+    const parcela = ["qué es una parcela", "que es una parcela"];
     if (msg.text.toString().toLowerCase().includes(parcela[0]) || msg.text.toString().toLowerCase().includes(parcela[1])) {
         bot.sendMessage(chatId, "Donde se mete el ganado.");
     }
 
-/*
-    var fecham = new Date();
-    var horam = fecham.getHours();
-    if (horam >= 0 && horam < 5) {
-        bot.sendMessage(chatId, "Ya marico, por Dios... son las " + getDateTime() + " vayan a dormir.");
-    }
-*/
+    
 
     //Imagenes.
-    var sebin = "sebin";
+    const sebin = "sebin";
     if (msg.text.toString().toLowerCase().includes(sebin)) {
         bot.sendPhoto(chatId, "./files/sebin.jpg");
     }
 
-    var dtdm = "este bot dominará al mundo";
+    const dtdm = "este bot dominará al mundo";
     if (msg.text.toString().toLowerCase().includes(dtdm)) {
         bot.sendPhoto(chatId, "./files/dominiototaldelmundo.jpg");
     }
 
+
     
     //Audios.
-    var pmmgva = "por mamagueva";
+    const pmmgva = "por mamagueva";
     if (msg.text.toString().toLowerCase().includes(pmmgva)) {
         bot.sendVoice(chatId, "./files/mamagueva.mp3");
     }
 
-    var maricodv = "marico de verdad";
+    const maricodv = "marico de verdad";
     if (msg.text.toString().toLowerCase().includes(maricodv)) {
         bot.sendVoice(chatId, "./files/marico.mp3");
     }
 
-    var volo = "voló";
+    const volo = "voló";
     if (msg.text.toString().toLowerCase().includes(volo)) {
         bot.sendVoice(chatId, "./files/volo.mp3");
     }
 
-    var enanomarico = ["qué vas a saber tú", "qué vas a saber tu", "que vas a saber tú", "que vas a saber tu"];
+    const enanomarico = ["qué vas a saber tú", "qué vas a saber tu", "que vas a saber tú", "que vas a saber tu"];
     if (msg.text.toString().toLowerCase().includes(enanomarico[0]) || msg.text.toString().toLowerCase().includes(enanomarico[1]) || msg.text.toString().toLowerCase().includes(enanomarico[2]) || msg.text.toString().toLowerCase().includes(enanomarico[3])) {
         bot.sendVoice(chatId, "./files/enanomarico.mp3");
     }
 
-    var nalatmarico = "nalat, ¿eres marico?";
+    const nalatmarico = "nalat, ¿eres marico?";
     if (msg.text.toString().toLowerCase().indexOf(nalatmarico) === 0) {
         bot.sendVoice(chatId, "./files/nosoymarico.mp3");
     }
 
-    var matalosatodos = "matalos a todos";
+    const matalosatodos = "matalos a todos";
     if (msg.text.toString().toLowerCase().includes(matalosatodos)) {
         bot.sendVoice(chatId, "./files/matalosatodos.mp3");
     }
 
-    var ggg = "nalat, lanzate una ahí";
+    const ggg = "nalat, lanzate una ahí";
     if (msg.text.toString().toLowerCase().indexOf(ggg) === 0) {
         bot.sendVoice(chatId, "./files/gafogafogafo.mp3");
     }
 
-    var estudiar = "vamos a estudiar";
-    if (msg.text.toString().toLowerCase().indexOf(estudiar) === 0) {
+    const estudiar = "vamos a estudiar";
+    if (msg.text.toString().toLowerCase().includes(estudiar)) {
         bot.sendVoice(chatId, "./files/vamosaestudiar.mp3");
     }
 
-    var meca = "es la meca de la irreverencia";
+    const meca = "es la meca de la irreverencia";
     if (msg.text.toString().toLowerCase().indexOf(meca) === 0) {
         bot.sendVoice(chatId, "./files/eslamecadelairreverencia.mp3");
     }
 
 
-    var flavio = "flavio";
-    if (msg.text.toString().toLowerCase().indexOf(flavio) === 0) {
+
+    //Videonota
+    const flavio = "flavio";
+    if (msg.text.toString().toLowerCase().includes(flavio)) {
         bot.sendVideoNote(chatId, "./files/flavio.mp4");
     }
 
+
+
     // Palabras prohibidas.
-    var sban = "hijo de puta";
+    const sban = "hijo de puta";
     if (msg.text.toString().toLowerCase().includes(sban)) {
-        ot.kickChatMember(chatId, fromId);
+        bot.kickChatMember(chatId, fromId);
         bot.sendMessage(chatId, fromName + " ha sido explusad@ por becerr@.");
         bot.sendVoice(msg.chat.id, "./files/mamagueva.mp3");
         bot.unbanChatMember(chatId, fromId);
@@ -734,9 +970,6 @@ bot.on("message", function(msg) {
 --------------------------------------------------------------------------
 |                               Papelera                                 |
 --------------------------------------------------------------------------
-
+*/
 
 //Inserte aquí el código a borrar.
-
-
-*/
