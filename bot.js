@@ -249,7 +249,7 @@ bot.on('message', function(msg) {
         let fechac = new Date();
         let horac = fechac.getHours();
         let minc = fechac.getMinutes();
-        if (horac >= 11 && minc >= 30) {
+        if (horac >= 13 && minc >= 30) {
             
             //Mensaje de solicitud de nombre para la lista de Catia.
             bot.sendMessage(msg.from.id, "Has elegido la lista de *Catia*.\nPor favor introduce tu nombre.", opts).then(function(sended) {
@@ -317,7 +317,7 @@ bot.on('message', function(msg) {
         let fechaas = new Date();
         let horaas = fechaas.getHours();
         let minas = fechaas.getMinutes();
-        if (horaas >= 11 && minas >= 30) {
+        if (horaas >= 13 && minas >= 30) {
             
             //Mensaje de solicitud de nombre para la lista de Av Sucre.
             bot.sendMessage(msg.from.id, "Has elegido la lista de la *Av Sucre*.\nPor favor introduce tu nombre.", opts).then(function(sended) {
