@@ -8,6 +8,11 @@ const token = process.env.TELEGRAM_TOKEN;
 const bot = new TelegramBot(token, { polling: true });
 const request = require("request");
 
+// Horario en que se abre la lista
+var listaabrehora = process.env.HORA;
+var listaabreminutos = process.env.HORA_MINUTOS;
+
+
 /*
     ---Indice---
 
@@ -249,7 +254,7 @@ bot.on('message', function(msg) {
         let fechac = new Date();
         let horac = fechac.getHours();
         let minc = fechac.getMinutes();
-        if (horac >= 13 && minc >= 30) {
+        if (horac >= listaabrehora && minc >= listaabreminutos) {
             
             //Mensaje de solicitud de nombre para la lista de Catia.
             bot.sendMessage(msg.from.id, "Has elegido la lista de *Catia*.\nPor favor introduce tu nombre.", opts).then(function(sended) {
@@ -286,7 +291,7 @@ bot.on('message', function(msg) {
             });
         } else {
             
-            bot.sendMessage(msg.from.id, "Lo siento " + msg.from.first_name + ", debes esperar hasta las *11:30 PM* para poder anotarte.\n\nHora del servidor: *" + getDateTime() + "*.", { parse_mode: "Markdown" });
+            bot.sendMessage(msg.from.id, "Lo siento " + msg.from.first_name + `, debes esperar hasta las ${listaabrehora}:${listaabreminutos} para poder anotarte.\n\nHora del servidor: *` + getDateTime() + "*.", { parse_mode: "Markdown" });
         }
     }
 
@@ -317,7 +322,7 @@ bot.on('message', function(msg) {
         let fechaas = new Date();
         let horaas = fechaas.getHours();
         let minas = fechaas.getMinutes();
-        if (horaas >= 13 && minas >= 30) {
+        if (horaas >= listaabrehora && minas >= listaabreminutos) {
             
             //Mensaje de solicitud de nombre para la lista de Av Sucre.
             bot.sendMessage(msg.from.id, "Has elegido la lista de la *Av Sucre*.\nPor favor introduce tu nombre.", opts).then(function(sended) {
