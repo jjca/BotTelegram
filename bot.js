@@ -42,17 +42,6 @@ var listaabreminutos = process.env.HORA_MINUTOS;
 */
 
 
-//Mensajes Importantes de /avisos
-function Warning(){
-
-    const title = "‼️‼️Importante‼️‼️\n\n";
-    const OP = "El orden de prioridad de la lista de la Av Sucre ha sido removida.\n";
-    const P1 = "Esto por petición de *Dirección de Transporte*\n";
-    const P2 = "Para más información hablar con @MaEscalanteHe";
-    
-    return title + OP + P1 + P2;
-}
-
 //Mensaje Principal
 function Welcome(){
 
@@ -342,7 +331,7 @@ bot.on('message', function(msg) {
                         listaavsucre_ext.push(msg.text.toString() + " - (Fue anotado por: *" + msg.from.first_name + "* (_" + msg.from.id + "_) a las: *" + getDateTime() + "*).");
                     }
                     //Mensaje de opciones.
-                    bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de *Agua Salud*.\n" + Warning(), {
+                    bot.sendMessage(msg.chat.id, "Ha sido anotad@ en la lista de *Agua Salud*.\n", {
                         parse_mode: 'Markdown',
                         reply_markup: {
                             keyboard: [
@@ -581,9 +570,9 @@ bot.onText(/^\/hora$/, function(msg) {
     bot.sendMessage(msg.chat.id, `La hora es: *${getDateTime()}*`, { parse_mode: "Markdown" });
 });
 
-bot.onText(/^\/avisos$/, function(msg) {
+/* bot.onText(/^\/avisos$/, function(msg) {
     bot.sendMessage(msg.chat.id, Warning(), { parse_mode: "Markdown"});
-});
+}); */
 
 
 
