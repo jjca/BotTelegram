@@ -77,4 +77,9 @@ app.bot.on("message", function(msg) {
     if (msg.text.toString().toLowerCase().includes(cristo)) {
         app.bot.sendVoice(msg.chat.id, "./src/files/audios/escristo.mp3");
     }
+
+    const lobo = "una de lobo"
+    if (msg.text.toString().toLowerCase().includes(lobo)) {
+        app.bot.sendVoice(msg.chat.id, "./src/files/audios/lobo.mp3");
+    }
 });
