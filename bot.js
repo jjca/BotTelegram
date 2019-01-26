@@ -673,12 +673,12 @@ bot.on("message", function(msg) {
     //Imagenes.
     const sebin = "sebin";
     if (msg.text.toString().toLowerCase().includes(sebin)) {
-        bot.sendPhoto(chatId, "./files/sebin.jpg");
+        bot.sendPhoto(chatId, "./src/files/images/sebin.jpg");
     }
 
     const dtdm = "este bot dominará al mundo";
     if (msg.text.toString().toLowerCase().includes(dtdm)) {
-        bot.sendPhoto(chatId, "./files/dominiototaldelmundo.jpg");
+        bot.sendPhoto(chatId, "./src/files/images/dominiototaldelmundo.jpg");
     }
 
 
@@ -686,47 +686,47 @@ bot.on("message", function(msg) {
     //Audios.
     const pmmgva = "por mamagueva";
     if (msg.text.toString().toLowerCase().includes(pmmgva)) {
-        bot.sendVoice(chatId, "./files/mamagueva.mp3");
+        bot.sendVoice(chatId, "./src/files/audios/mamagueva.mp3");
     }
 
     const maricodv = "marico de verdad";
     if (msg.text.toString().toLowerCase().includes(maricodv)) {
-        bot.sendVoice(chatId, "./files/marico.mp3");
+        bot.sendVoice(chatId, "./src/files/audios/marico.mp3");
     }
 
     const volo = "voló";
     if (msg.text.toString().toLowerCase().includes(volo)) {
-        bot.sendVoice(chatId, "./files/volo.mp3");
+        bot.sendVoice(chatId, "./src/files/audios/volo.mp3");
     }
 
     const enanomarico = ["qué vas a saber tú", "qué vas a saber tu", "que vas a saber tú", "que vas a saber tu"];
     if (msg.text.toString().toLowerCase().includes(enanomarico[0]) || msg.text.toString().toLowerCase().includes(enanomarico[1]) || msg.text.toString().toLowerCase().includes(enanomarico[2]) || msg.text.toString().toLowerCase().includes(enanomarico[3])) {
-        bot.sendVoice(chatId, "./files/enanomarico.mp3");
+        bot.sendVoice(chatId, "./src/files/audios/enanomarico.mp3");
     }
 
     const nalatmarico = "nalat, ¿eres marico?";
     if (msg.text.toString().toLowerCase().indexOf(nalatmarico) === 0) {
-        bot.sendVoice(chatId, "./files/nosoymarico.mp3");
+        bot.sendVoice(chatId, "./src/files/audios/nosoymarico.mp3");
     }
 
     const matalosatodos = "matalos a todos";
     if (msg.text.toString().toLowerCase().includes(matalosatodos)) {
-        bot.sendVoice(chatId, "./files/matalosatodos.mp3");
+        bot.sendVoice(chatId, "./src/files/audios/matalosatodos.mp3");
     }
 
     const ggg = "nalat, lanzate una ahí";
     if (msg.text.toString().toLowerCase().indexOf(ggg) === 0) {
-        bot.sendVoice(chatId, "./files/gafogafogafo.mp3");
+        bot.sendVoice(chatId, "./src/files/audios/gafogafogafo.mp3");
     }
 
     const estudiar = "vamos a estudiar";
     if (msg.text.toString().toLowerCase().includes(estudiar)) {
-        bot.sendVoice(chatId, "./files/vamosaestudiar.mp3");
+        bot.sendVoice(chatId, "./src/files/audios/vamosaestudiar.mp3");
     }
 
     const meca = "es la meca de la irreverencia";
     if (msg.text.toString().toLowerCase().indexOf(meca) === 0) {
-        bot.sendVoice(chatId, "./files/eslamecadelairreverencia.mp3");
+        bot.sendVoice(chatId, "./src/files/audios/eslamecadelairreverencia.mp3");
     }
 
 
@@ -734,7 +734,7 @@ bot.on("message", function(msg) {
     //Videonota
     const flavio = "flavio";
     if (msg.text.toString().toLowerCase().includes(flavio)) {
-        bot.sendVideoNote(chatId, "./files/flavio.mp4");
+        bot.sendVideoNote(chatId, "./src/files/audios/flavio.mp4");
     }
 
 
@@ -744,7 +744,7 @@ bot.on("message", function(msg) {
     if (msg.text.toString().toLowerCase().includes(sban)) {
         bot.kickChatMember(chatId, fromId);
         bot.sendMessage(chatId, fromName + " ha sido explusad@ por becerr@.");
-        bot.sendVoice(msg.chat.id, "./files/mamagueva.mp3");
+        bot.sendVoice(msg.chat.id, "./src/files/audios/mamagueva.mp3");
         bot.unbanChatMember(chatId, fromId);
     }
 });
