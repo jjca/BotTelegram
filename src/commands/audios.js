@@ -67,4 +67,14 @@ app.bot.on("message", function(msg) {
     if (msg.text.toString().toLowerCase().includes(lester)) {
         app.bot.sendVoice(msg.chat.id, "./src/files/audios/hablalelester.mp3");
     }
+
+    const divino = "divino";
+    if (msg.text.toString().toLowerCase().includes(divino)) {
+        app.bot.sendVoice(msg.chat.id, "./src/files/audios/erimar.mp3");
+    }
+
+    const cristo = "es cristo";
+    if (msg.text.toString().toLowerCase().includes(cristo)) {
+        app.bot.sendVoice(msg.chat.id, "./src/files/audios/escristo.mp3");
+    }
 });
