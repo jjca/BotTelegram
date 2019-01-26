@@ -6,6 +6,7 @@
   "author": "Manuel Escalante",
   "license": "ISC",
   "dependencies": {
+    "eslint": "^5.12.1",
     "node-telegram-bot-api": "^0.30.0"
   },
   "engines": {
