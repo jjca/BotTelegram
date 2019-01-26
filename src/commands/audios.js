@@ -52,4 +52,19 @@ app.bot.on("message", function(msg) {
     if (msg.text.toString().toLowerCase().indexOf(meca) === 0) {
         app.bot.sendVoice(chatId, "./src/files/audios/eslamecadelairreverencia.mp3");
     }
+
+    const viejo = "viejo lesbiano";
+    if (msg.text.toString().toLowerCase().includes(viejo)) {
+        app.bot.sendVoice(chatId, "./src/files/audios/viejolesbiano.mp3");
+    }
+
+    const ppc = "palo por ese culo";
+    if (msg.text.toString().toLowerCase().indexOf(ppc) === 0) {
+        app.bot.sendVoice(msg.chat.id, "./src/files/audios/paloporeseculo.mp3");
+    }
+
+    const lester = "hablale lester";
+    if (msg.text.toString().toLowerCase().includes(lester)) {
+        app.bot.sendVoice(msg.chat.id, "./src/files/audios/hablalelester.mp3");
+    }
 });

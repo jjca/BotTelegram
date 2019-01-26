@@ -30,4 +30,4 @@ app.bot.onText(/^\!progreso$|^\/progreso$/, (msg) => {
 		app.bot.deleteMessage(msg.chat.id, msg.message_id);
 		app.bot.sendMessage(msg.chat.id, "⏳ El progreso actual del año es: \n\n" + barra_progreso);
 	}
- });
+});

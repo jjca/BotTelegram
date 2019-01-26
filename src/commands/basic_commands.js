@@ -1,41 +1,67 @@
 'use strict';
 
-// Mensaje Principal.
-let welcome = Welcome();
-function Welcome() {
-    const title = "‼️*Recuerda tres cosas:*‼️";
-    const W1 = "1️⃣ Leer las /reglas.";
-    const W2 = "2️⃣ Leer de vez en cuando los avisos con: /avisos.";
-    const W3 = "3️⃣ Estar en el Amper a las *4:00 PM* para pasar la lista antes de que llegue el bus.";
-    const SO = "*Por favor selecciona una opción:*";
+const app = require('../settings/app');
 
-    return `${title}\n\n${W1}\n\n${W2}\n\n${W3}\n\n${SO}`;
-}
+//FAQ.
+app.bot.onText(/^\/faq$/, function(msg) {
+    app.bot.sendMessage(msg.chat.id, Faq(), { parse_mode: "Markdown" });
+});
+  
+//Reglas.
+app.bot.onText(/^\/reglas$/, function(msg) {
+    app.bot.sendMessage(msg.chat.id, Rules(), { parse_mode: "Markdown" });
+});
 
-// Mensaje de reglas.
-let rules = Rules();
-function Rules() {
-    
-    const title = "⚠️ *Reglas para el uso de las listas digitales Catia/AvSucre* ⚠️";
-    const rule1 = "1️⃣ Al momento de anotarse en las listas colocar su *Nombre* y *Apellido*, de lo contrario será omitido a la hora de abordar el bus.";
-    const rule2 = "2️⃣ *Evitar* anotar a más de dos personas en un mismo dispositivo. En caso de hacerlo, de forma consecutiva, la tercera persona será omitida de la lista.";
-    const rule3 = "3️⃣ Recordar que el transporte es de empleados y los mismos tienen prioridad al momento de abordar el bus, por tanto si quedan empleados de pie los últimos de la lista deben ceder el puesto.";
-    const rule4 = "4️⃣ ...";
+//Comandos.
+app.bot.onText(/^\/comandos$/, function(msg) {
+    app.bot.sendMessage(msg.chat.id, Commands(), { parse_mode: "Markdown" });
+});
 
-    return `${title}\n\n${rule1}\n\n${rule2}\n\n${rule3}\n\n${rule4}`;
-}
+//Grupos.
+app.bot.onText(/^\/grupos$/, function(msg) {
+    app.bot.sendMessage(msg.chat.id, Groups(), { disable_web_page_preview: true, parse_mode: "Markdown" });
+});
 
-// Mensaje de tiempo.
-let time = Time();
-function Time() {
+//Hora.
+app.bot.onText(/^\/hora$/, function(msg) {
+    app.bot.sendMessage(msg.chat.id, `La hora es: *${getDateTime()}*`, { parse_mode: "Markdown" });
+});
 
-    const msg = "La hora actual del servidor es:";
+//ID del chat.
+app.bot.onText(/^\/chatid$/, function(msg) {
+    app.bot.sendMessage(msg.chat.id, "El ID de este chat es: " + msg.chat.id);
+});
+  
+//Ver ID.
+app.bot.onText(/^\/myid$/, function(msg) {
+    app.bot.sendMessage(msg.chat.id, "Tu id es: " + msg.from.id);
+});
+  
+//Juego Ping Pong.
+app.bot.onText(/^\/ping/, function(msg) {
+    app.bot.sendMessage(msg.chat.id, "¡Pong!");
+});
+app.bot.onText(/^\/pong/, function(msg) {
+    app.bot.sendMessage(msg.chat.id, "¡Ping!");
+});
+  
+//Repositorio
+app.bot.onText(/^\/repositorio/, function(msg) {
+    app.bot.sendMessage(msg.chat.id, "https://github.com/MaEscalanteHe/BotTelegram");
+});
 
-    return `${msg} *${getDateTime()}*`;
-}
+/*
+--------------------------------------------------------------------------
+|------------------------------------------------------------------------|
+|------------------------------------------------------------------------|
+|                              Funciones                                 |
+|------------------------------------------------------------------------|
+|------------------------------------------------------------------------|
+--------------------------------------------------------------------------
+*/
 
 // Mensaje de preguntas frecuentes.
-let faq = Faq();
+var faq = Faq();
 function Faq() {
 
     const title = "📊 *Preguntas Frecuentes* 📊";
@@ -48,7 +74,7 @@ function Faq() {
 }
 
 // Mensaje de comandos disponibles.
-let commands = Commands();
+var commands = Commands();
 function Commands() {
 
     const title = "⌨️ *Comandos Disponlibles* ⌨️";
@@ -64,7 +90,7 @@ function Commands() {
 }
 
 // Mensaje de grupos.
-let groups = Groups();
+var groups = Groups();
 function Groups() {
 
     const title = "⌨️ *Grupos de Telegram* ⌨️";
@@ -76,7 +102,7 @@ function Groups() {
     return `${title}\n\n${GC}\n${LC}\n\n${GAS}\n${LAS}`;
 }
 
-//Función de tiempo
+// Función de tiempo.
 function getDateTime() {
     
     let date = new Date();
@@ -94,8 +120,3 @@ function getDateTime() {
   
     return `${hour}:${min}:${sec}`;
 }
-
-
-
-// Modulos exportados.
-module.exports = {welcome}
