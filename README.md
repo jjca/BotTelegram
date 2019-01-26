@@ -45,7 +45,7 @@ npm install -g pm2
 
 ### Comandos básicos 
 
-<img src="./files/pm2monitor.png">
+<img src="./src/files/images/pm2monitor.png">
 
 * Para iniciar:
 
