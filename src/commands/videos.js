@@ -12,4 +12,9 @@ app.bot.on("message", function(msg) {
     if (msg.text.toString().toLowerCase().includes(flavio)) {
         app.bot.sendVideoNote(chatId, "./src/files/videos/flavio.mp4");
     }
+
+    const meperdonas = "me perdonas";
+    if (msg.text.toString().toLowerCase().includes(meperdonas)) {
+        app.bot.sendVideoNote(chatId, "./src/files/videos/meperdonas.mp4");
+    }
 });
