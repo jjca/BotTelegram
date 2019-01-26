@@ -3,5 +3,5 @@
 const app = require('./app');
 
 app.bot.on('polling_error', function(error){
-    console.log(error)
+    console.log(error);
 });

@@ -10,11 +10,12 @@ app.bot.on("message", function(msg) {
     
     const sebin = "sebin";
     if (msg.text.toString().toLowerCase().includes(sebin)) {
-        app.bot.sendPhoto(chatId, "../files/images/sebin.jpg");
+        app.bot.sendPhoto(chatId, "./src/files/images/sebin.jpg");
+        app.bot.sendMessage(chatId, 'test');
     }
 
     const dtdm = "este bot dominará al mundo";
     if (msg.text.toString().toLowerCase().includes(dtdm)) {
-        app.bot.sendPhoto(chatId, "../files/images/dominiototaldelmundo.jpg");
+        app.bot.sendPhoto(chatId, "./src/files/images/dominiototaldelmundo.jpg");
     }
 });
