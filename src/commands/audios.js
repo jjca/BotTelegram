@@ -82,4 +82,9 @@ app.bot.on("message", function(msg) {
     if (msg.text.toString().toLowerCase().includes(lobo)) {
         app.bot.sendVoice(msg.chat.id, "./src/files/audios/lobo.mp3");
     }
+
+    const bebe = "bebesita"
+    if (msg.text.toString().toLowerCase().includes(bebe)) {
+        app.bot.sendVoice(msg.chat.id, "./src/files/audios/bebesitaAa.mp3");
+    }
 });
